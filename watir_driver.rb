@@ -34,4 +34,12 @@ class WatirDriver < AutomationDriver
   def checked?
     :set?
   end #checked?
+
+  def enter
+    :set
+  end #enter
+
+  def text
+    :value
+  end
 end

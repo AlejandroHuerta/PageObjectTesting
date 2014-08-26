@@ -7,30 +7,52 @@ browser = WatirDriver.new
 page = TestPage.new browser
 
 describe ClickObject do
-  browser.send :goto, "file://#{Dir.pwd}\\TestPage.html"
 
-  it 'should click the link Google' do
-    page.send('W3Schools').send(:click)
+  it '.click' do
+    browser.send :goto, "file://#{Dir.pwd}\\TestPage.html"
+
+    expect(page.send('W3Schools').send(:click)).to be_instance_of(Array)
+  end
+end
+
+describe TextInputObject do
+
+  it '.set text' do
+    browser.send :goto, "file://#{Dir.pwd}\\TestPage.html"
+
+    expect(page.send('First name').send(:set, 'Test')).to equal(nil)
+  end
+
+  it '.text' do
+    browser.send :goto, "file://#{Dir.pwd}\\TestPage.html"
+
+    page.send('First name').send(:set, 'Test')
+
+    expect(page.send('First name').send(:text)).to eq('Test')
   end
 end
 
 describe ListObject do
-  browser.send :goto, "file://#{Dir.pwd}\\TestPage.html"
 
-  it 'should manipulate list' do
-    page.send('List1').send(1).send(:click)
+
+  it '.#.click' do
+    browser.send :goto, "file://#{Dir.pwd}\\TestPage.html"
+
+    expect(page.send('List1').send(1).send(:click)).to be_instance_of(Array)
   end
 
-  it 'should be able to select which child to pass the action to' do
-    page.send('List2').send(0).send('TextField').send(:set, 'Test')
+  it '.#.name.set text' do
+    browser.send :goto, "file://#{Dir.pwd}\\TestPage.html"
+
+    expect(page.send('List2').send(0).send('TextField').send(:set, 'Test')).to equal(nil)
   end
 end
 
 describe CheckboxObject do
-  browser.send :goto, "file://#{Dir.pwd}\\TestPage.html"
 
-  it 'should check and then uncheck a box' do
-    page.send('I have a bike').send(:check)
-    expect(page.send('I have a bike').send(:checked?)).to equal(true)
+  it '.name.check' do
+    browser.send :goto, "file://#{Dir.pwd}\\TestPage.html"
+
+    expect(page.send('I have a bike').send(:check)).to equal(nil)
   end
 end
