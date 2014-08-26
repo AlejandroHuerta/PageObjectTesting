@@ -14,7 +14,7 @@ class ElementObject
   def send(*_args)
     if @actions.include?(_args[0]) || @actions.include?(_args[0].class)
       self.do_work *_args
-    elsif @children.length > 0
+    elsif !@children.nil? && @children.length > 0
       found_child = get_child_name _args[0]
       if found_child.nil?
         @children.each do |child|
