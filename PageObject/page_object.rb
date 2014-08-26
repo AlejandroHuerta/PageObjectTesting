@@ -1,9 +1,9 @@
-require_relative 'element_object'
-require_relative 'click_object'
-require_relative 'text_input_object'
-require_relative 'list_object'
-require_relative 'selector'
-require_relative 'checkbox_object'
+require_relative '../Elements/element_object'
+require_relative '../Elements/click_element'
+require_relative '../Elements/text_input_element'
+require_relative '../Elements/list_element'
+require_relative '../Elements/selector'
+require_relative '../Elements/checkbox_element'
 
 module PageObject
   attr_accessor :driver

@@ -1,6 +1,6 @@
 require 'rspec'
-require_relative '../watir_driver'
-require_relative '../page_object'
+require_relative '../Driver/watir_driver'
+require_relative '../PageObject/page_object'
 require_relative 'test_page'
 
 browser = WatirDriver.new

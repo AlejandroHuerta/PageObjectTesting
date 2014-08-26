@@ -1,4 +1,4 @@
-require_relative '../page_object'
+require_relative '../PageObject/page_object'
 
 class TestPage
   include PageObject
