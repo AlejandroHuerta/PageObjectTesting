@@ -46,7 +46,7 @@ class ElementObject
 
   #overridden by subclass
   def action(_driver, *_args)
-
+    raise NotImplementedError, new("#{self.class.name} is an abstract class.")
   end #action
 
   protected
