@@ -31,5 +31,6 @@ describe CheckboxObject do
 
   it 'should check and then uncheck a box' do
     page.send('I have a bike').send(:check)
+    expect(page.send('I have a bike').send(:checked?)).to equal(true)
   end
 end

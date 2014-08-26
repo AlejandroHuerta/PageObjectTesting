@@ -28,4 +28,8 @@ class WatirDriver < AutomationDriver
   def uncheck
     :clear
   end
+
+  def checked?
+    :set?
+  end
 end

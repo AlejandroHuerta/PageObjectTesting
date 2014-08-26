@@ -2,7 +2,7 @@ require_relative 'element_object'
 
 class CheckboxObject < ElementObject
   def initialize(_driver, _name, _selector, _children = nil)
-    super _driver, _name, _selector, _children, [:check, :uncheck]
+    super _driver, _name, _selector, _children, [:check, :uncheck, :set, :clear, :checked?, :set?]
   end#initialize
 
   def action(_driver, *_args)
