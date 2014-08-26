@@ -18,18 +18,20 @@ class WatirDriver < AutomationDriver
   def process_result(_result)
     if _result.class.name.split('::').first == 'Watir'
       WatirDriver.new _result
-    end #unless
+    else
+      _result
+    end #else
   end #process_result
 
   def check
     :set
-  end
+  end #check
 
   def uncheck
     :clear
-  end
+  end #uncheck
 
   def checked?
     :set?
-  end
+  end #checked?
 end
