@@ -23,7 +23,7 @@ class AutomationDriver
   protected
   #should be override by subclass
   def process_result(_result)
-
+    raise NotImplementedError, new("#{self.class.name} is an abstract class.")
   end #process_result
 
   def do_work(*_args)
