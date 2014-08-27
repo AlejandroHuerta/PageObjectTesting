@@ -8,7 +8,7 @@ page = TestPage.new browser
 
 describe ClickElement do
 
-  it '.click' do
+  it '.send(:click)' do
     browser.send :goto, "file://#{Dir.pwd}\\TestPage.html"
 
     expect(page.send('W3Schools').send(:click)).to be_instance_of(Array)
@@ -17,30 +17,30 @@ end
 
 describe TextInputElement do
 
-  it '.set text' do
+  it ".send(:set, 'text')" do
     browser.send :goto, "file://#{Dir.pwd}\\TestPage.html"
 
     expect(page.send('First name').send(:set, 'Test')).to equal(nil)
   end
 
-  it '.text' do
+  it '.send(:value)' do
     browser.send :goto, "file://#{Dir.pwd}\\TestPage.html"
 
     page.send('First name').send(:set, 'Test')
 
-    expect(page.send('First name').send(:text)).to eq('Test')
+    expect(page.send('First name').send(:value)).to eq('Test')
   end
 end
 
 describe ListElement do
 
-  it '.#.click' do
+  it '.send(#).send(:click)' do
     browser.send :goto, "file://#{Dir.pwd}\\TestPage.html"
 
     expect(page.send('List1').send(1).send(:click)).to be_instance_of(Array)
   end
 
-  it '.#.name.set text' do
+  it ".send(#).send('name').send(:set, 'text')" do
     browser.send :goto, "file://#{Dir.pwd}\\TestPage.html"
 
     expect(page.send('List2').send(0).send('TextField').send(:set, 'Test')).to equal(nil)
@@ -49,7 +49,7 @@ end
 
 describe CheckboxElement do
 
-  it '.name.check' do
+  it ".send('name').send(:check)" do
     browser.send :goto, "file://#{Dir.pwd}\\TestPage.html"
 
     expect(page.send('I have a bike').send(:check)).to equal(nil)
@@ -58,9 +58,16 @@ end
 
 describe SaveElement do
 
-  it '.save' do
+  it '.send(:save)' do
+    browser.send :goto, "file://#{Dir.pwd}\\TestPage.html"
+
+    expect(page.send('Reddit').send(:save)).to eq('Reddit')
+  end
+
+  it '.send(:value)' do
     browser.send :goto, "file://#{Dir.pwd}\\TestPage.html"
 
     page.send('Reddit').send(:save)
+    expect(page.send('Reddit').send(:value)).to eq('Reddit')
   end
 end
