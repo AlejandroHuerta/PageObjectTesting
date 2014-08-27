@@ -3,7 +3,7 @@ require_relative 'element_object'
 
 class TextInputElement < ElementObject
   def initialize(_driver, _name, _hash)
-    _hash[:actions] = [:enter, :set, :text]
+    _hash[:actions] = [:enter, :set, :text, :value]
     super
   end #initialize
 
