@@ -1,9 +1,10 @@
 require_relative 'element_object'
 
 
-class TextInputObject < ElementObject
-  def initialize(_driver, _name, _selector, _children = nil)
-    super _driver, _name, _selector, _children, [:enter, :set, :text]
+class TextInputElement < ElementObject
+  def initialize(_driver, _name, _hash)
+    _hash[:actions] = [:enter, :set, :text]
+    super
   end #initialize
 
   def action(_driver, *_args)
@@ -12,7 +13,7 @@ class TextInputObject < ElementObject
 end #class text_input_object
 
 module PageObject
-  def text_field(_name, _selector, _children = nil)
-    TextInputObject.new @driver, _name, _selector, _children
+  def text_field(_name, _hash)
+    TextInputElement.new @driver, _name, _hash
   end
 end

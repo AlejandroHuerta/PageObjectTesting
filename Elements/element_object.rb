@@ -2,17 +2,17 @@
 class ElementObject
   attr_reader :driver, :name, :selector, :children, :actions, :next_page
 
-  def initialize(_driver, _name, _selector, _children = nil, _actions = nil, _next_page = nil)
+  def initialize(_driver, _name, _hash)
     @driver = _driver
     @name = _name
-    @selector = _selector
-    @children = [*_children] unless _children.nil?
-    @actions = _actions.nil? ? [] : _actions
-    @next_page = _next_page
+    @selector = _hash[:selector]
+    @children = [*_hash[:children]] if _hash.has_key? :children
+    @actions = (_hash.has_key?(:actions) ? [*_hash[:actions]] : [])
+    @next_page = _hash[:next_page]
   end #initialize
 
   def send(*_args)
-    if @actions.include?(_args[0]) || @actions.include?(_args[0].class)
+    if @actions.include?(_args[0]) || @actions.include?(_args[0].class) || @actions.include?(:all)
       self.do_work *_args
     elsif !@children.nil? && @children.length > 0
       found_child = get_child_name _args[0]
@@ -33,7 +33,7 @@ class ElementObject
   end #send
 
   def do_work(*_args)
-    native_element = self.driver.send(self.selector.type, self.selector.locator)
+    native_element = @selector.nil? ? @driver : self.driver.send(self.selector.type, self.selector.locator)
 
     result = self.action native_element, *_args
 
@@ -64,7 +64,7 @@ class ElementObject
 end #class element_object
 
 module PageObject
-  def element(_name, _selector, _children = nil)
-    ElementObject.new @driver, _name, _selector, _children
+  def element(_name, _hash = {})
+    ElementObject.new @driver, _name, _hash
   end
 end

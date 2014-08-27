@@ -1,8 +1,9 @@
 require_relative 'element_object'
 
-class ListObject < ElementObject
-  def initialize(_driver, _name, _selector, _children)
-    super _driver, _name, _selector, _children, [Fixnum]
+class ListElement < ElementObject
+  def initialize(_driver, _name, _hash)
+    _hash[:actions] = Fixnum
+    super
   end #initialize
 
   def action(_driver, args)
@@ -16,7 +17,7 @@ class ListObject < ElementObject
 end #class list_object
 
 module PageObject
-  def list(_name, _selector, _children)
-    ListObject.new @driver, _name, _selector, _children
+  def list(_name, _hash = {})
+    ListElement.new @driver, _name, _hash
   end
 end
