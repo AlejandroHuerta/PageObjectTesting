@@ -33,9 +33,14 @@ class ElementObject
   end #send
 
   def do_work(*_args)
+
     native_element = @selector.nil? ? @driver : self.driver.send(self.selector.type, self.selector.locator)
 
-    result = self.action native_element, *_args
+    if self.respond_to? *_args
+      result = self.__send__ *_args
+    else
+      result = self.action native_element, *_args
+    end
 
     if @next_page.nil?
       result

@@ -18,7 +18,8 @@ class TestPage
                     selector: selector(:checkbox, value: 'Bike')
 
     create_save 'Reddit',
-                selector: selector(:a, id: 'link3')
+                selector: selector(:a, id: 'link3'),
+                method: :text
 
     create_list 'List1',
                 selector: selector(:ul, id: 'list'),
