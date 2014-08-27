@@ -6,7 +6,7 @@ require_relative 'test_page'
 browser = WatirDriver.new
 page = TestPage.new browser
 
-describe ClickObject do
+describe ClickElement do
 
   it '.click' do
     browser.send :goto, "file://#{Dir.pwd}\\TestPage.html"
@@ -15,7 +15,7 @@ describe ClickObject do
   end
 end
 
-describe TextInputObject do
+describe TextInputElement do
 
   it '.set text' do
     browser.send :goto, "file://#{Dir.pwd}\\TestPage.html"
@@ -32,8 +32,7 @@ describe TextInputObject do
   end
 end
 
-describe ListObject do
-
+describe ListElement do
 
   it '.#.click' do
     browser.send :goto, "file://#{Dir.pwd}\\TestPage.html"
@@ -48,11 +47,20 @@ describe ListObject do
   end
 end
 
-describe CheckboxObject do
+describe CheckboxElement do
 
   it '.name.check' do
     browser.send :goto, "file://#{Dir.pwd}\\TestPage.html"
 
     expect(page.send('I have a bike').send(:check)).to equal(nil)
+  end
+end
+
+describe SaveElement do
+
+  it '.save' do
+    browser.send :goto, "file://#{Dir.pwd}\\TestPage.html"
+
+    page.send('Reddit').send(:save)
   end
 end
