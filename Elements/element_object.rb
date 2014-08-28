@@ -1,5 +1,11 @@
+require_relative '../Support/class_level_inheritable_attributes'
 
 class ElementObject
+  include ClassLevelInheritableAttributes
+
+  inheritable_attributes :actions_dictionary
+  @actions_dictionary = {}
+
   attr_reader :driver, :name, :selector, :children, :actions, :next_page
 
   def initialize(_driver, _name, _hash)
@@ -33,12 +39,11 @@ class ElementObject
   end #send
 
   def do_work(*_args)
-
     if self.respond_to? *_args[0].to_s
       result = self.__send__ *_args
     else
       native_element = @selector.nil? ? @driver : @driver.send(self.selector.type, self.selector.locator)
-      result = self.action native_element, *_args
+      result = self.action native_element, *filter_actions(*_args)
     end #else
 
     if @next_page.nil?
@@ -65,10 +70,15 @@ class ElementObject
     end #do
     child
   end #get_child_name
+
+  def filter_actions(*_args)
+    _args[0] = self.class.actions_dictionary[_args[0]] if self.class.actions_dictionary.has_key? _args[0]
+    _args
+  end #filter_actions
 end #class element_object
 
 module PageObject
   def element(_name, _hash = {})
     ElementObject.new @driver, _name, _hash
-  end
-end
+  end #element
+end #PageObject

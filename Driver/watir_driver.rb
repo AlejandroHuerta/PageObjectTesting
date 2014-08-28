@@ -1,5 +1,6 @@
 require_relative 'automation_driver'
 require 'watir'
+require_relative '../PageObject/page_object'
 
 class WatirDriver < AutomationDriver
   def initialize(_driver = nil)
@@ -10,11 +11,6 @@ class WatirDriver < AutomationDriver
     super _driver
   end #initiliaze
 
-  def send(*_args)
-    _args[0] = self.__send__ _args[0] if self.respond_to? _args[0]
-    super
-  end
-
   def process_result(_result)
     if _result.class.name.split('::').first == 'Watir'
       WatirDriver.new _result
@@ -22,24 +18,10 @@ class WatirDriver < AutomationDriver
       _result
     end #else
   end #process_result
+end# WatirDriver
 
-  def check
-    :set
-  end #check
-
-  def uncheck
-    :clear
-  end #uncheck
-
-  def checked?
-    :set?
-  end #checked?
-
-  def enter
-    :set
-  end #enter
-
-  def text
-    :value
-  end
-end
+module PageObject
+  #Action filters for this driver
+  TextInputElement.actions_dictionary = {enter: :value, text: :value}
+  CheckboxElement.actions_dictionary = {check: :set, uncheck: :clear, checked?: :set?}
+end #PageObject
