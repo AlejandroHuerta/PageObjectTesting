@@ -1,7 +1,6 @@
-require_relative '../PageObject/page_object'
+require_relative '../PageObject/page'
 
-class TestPage
-  include PageObject
+class TestPage < Page
 
   def initialize(_driver)
     super

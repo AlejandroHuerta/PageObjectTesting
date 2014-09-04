@@ -7,29 +7,6 @@ require_relative '../Elements/checkbox_element'
 require_relative '../Elements/save_element'
 
 module PageObject
-  attr_accessor :driver
-  attr_reader :elements
-
-  def initialize(_driver)
-    @driver = _driver
-    @elements = {}
-  end #initialize
-
-  def send(*_args)
-    if @elements.has_key? _args[0]
-      @elements[_args[0]]
-    else
-      super
-    end #else
-  end #send
-
-  def method_missing(_method_name, *_args, &_block)
-    if @driver.respond_to? _method_name
-      @driver.send _method_name, *_args, &_block
-    else
-      super
-    end #else
-  end #method_missing
 
   def create_element(_name, _hash = {})
     create_element_object :element, _name, _hash
