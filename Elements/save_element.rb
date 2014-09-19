@@ -5,7 +5,6 @@ class SaveElement < ElementObject
 
   def initialize(_driver, _name, _hash)
     _hash[:actions] = [:save, :value]
-    @method = _hash[:method]
     super
   end #initialize
 

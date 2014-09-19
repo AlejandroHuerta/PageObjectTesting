@@ -2,13 +2,10 @@ require_relative 'element_object'
 
 class ClickElement < ElementObject
   def initialize(_driver, _name, _hash)
+    _hash[:method] = :click if _hash[:method].nil?
     _hash[:actions] = :click
     super
   end #initialize
-
-  def action(_driver, *_args)
-    _driver.send :click
-  end #action
 end #click_object
 
 module PageObject

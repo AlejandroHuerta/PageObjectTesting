@@ -15,6 +15,7 @@ class ElementObject
     @children = [*_hash[:children]] if _hash.has_key? :children
     @actions = (_hash.has_key?(:actions) ? [*_hash[:actions]] : [])
     @next_page = _hash[:next_page]
+    @method = _hash[:method]
   end #initialize
 
   def send(*_args)
@@ -55,7 +56,8 @@ class ElementObject
 
   #overridden by subclass
   def action(_driver, *_args)
-    raise NotImplementedError, new("#{self.class.name} is an abstract class.")
+    raise ArgumentError, new('A :method was not assigned') if @method.nil?
+    _driver.send @method
   end #action
 
   protected
