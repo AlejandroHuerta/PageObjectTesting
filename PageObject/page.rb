@@ -5,6 +5,10 @@ class Page
 
   class << self
     attr_accessor :page
+
+    def build_page(_class)
+      Object::const_get(_class.name).new @driver
+    end
   end
 
   attr_accessor :driver

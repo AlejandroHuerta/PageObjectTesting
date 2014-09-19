@@ -19,12 +19,13 @@ describe Page do
 
     before(:each) do
       @browser.send :goto, "file://#{Dir.pwd}\\TestPage.html"
+      Page.page = TestPage.new @browser
     end
 
     describe ClickElement do
 
       it '.send(:click)' do
-        expect(Page.page.send('W3Schools').send(:click)).to be_instance_of(Array)
+        expect(Page.page.send('Dud').send(:click)).to be_instance_of(Array)
       end
     end
 

@@ -49,7 +49,7 @@ class ElementObject
     if @next_page.nil?
       result
     else
-      @next_page
+      Page.page = Page.build_page(@next_page)
     end #else
   end #do_work
 

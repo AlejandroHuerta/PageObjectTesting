@@ -8,7 +8,10 @@ class TestPage < Page
     create_click_object 'Google',
                         selector: selector(:a, id: 'link1')
     create_click_object 'W3Schools',
-                        selector: selector(:a, id: 'link2')
+                        selector: selector(:a, id: 'link2'),
+                        next_page: W3Page
+    create_click_object 'Dud',
+                        selector: selector(:button, id: 'dud_button')
 
     create_text_field 'First name',
                       selector: selector(:text_field, id: 'tf1')
@@ -24,6 +27,7 @@ class TestPage < Page
                 selector: selector(:ul, id: 'list'),
                 children: click_object('Result',
                                        selector: selector(:a))
+
     create_list 'List2',
                 selector: selector(:ul, id: 'compound_list'),
                 children: [click_object('Link',
