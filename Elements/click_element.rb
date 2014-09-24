@@ -9,10 +9,6 @@ class ClickElement < ElementObject
     end
     super
   end #initialize
-
-  def click(_driver, *_args)
-    _driver.send @actions[:click], *_args
-  end
 end #click_object
 
 module PageObject

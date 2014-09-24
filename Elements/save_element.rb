@@ -12,11 +12,11 @@ class SaveElement < ElementObject
 
   def save(_driver, *_args)
     @value = _driver.send @actions[:save], *_args
-  end
+  end#save
 
   def value(_driver, *_args)
     @value
-  end
+  end#value
 end #SaveElement
 
 module PageObject

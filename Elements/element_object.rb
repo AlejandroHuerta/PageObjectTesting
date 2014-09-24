@@ -15,11 +15,12 @@ class ElementObject
     @children = [*_hash[:children]] if _hash.has_key? :children
     @next_page = _hash[:next_page]
 
+    #merging actions together
     if _hash[:actions].nil?
       @actions = {:see => :see}
     else
       @actions = _hash[:actions].merge({:see => :see}){|key, oldval, newval| oldval}
-    end
+    end#else
 
     @actions.merge!(ElementObject.actions_dictionary){|key, oldval, newval| newval}
     @actions.merge!(self.class.actions_dictionary){|key, oldval, newval| newval}
@@ -52,8 +53,15 @@ class ElementObject
   def do_work(*_args)
     native_element = @selector.nil? ? @driver : @driver.send(self.selector.type, self.selector.locator)
 
-    result = self.__send__ _args.shift, native_element, *_args
+    #do we have a defined method for this call?
+    #otherwise construct the default send
+    if self.respond_to? _args[0]
+      result = self.__send__ _args.shift, native_element, *_args
+    else
+      result = native_element.send @actions[_args.shift.to_sym], *_args
+    end
 
+    #if we have a next_page specified we generate it and assign it
     if @next_page.nil?
       result
     else
@@ -63,7 +71,7 @@ class ElementObject
 
   def see(_driver, *_args)
     _driver.send @actions[:see], *_args
-  end
+  end#see
 
   protected
   def set_driver(_driver)

@@ -9,26 +9,6 @@ class CheckboxElement < ElementObject
     end
     super
   end#initialize
-
-  def check(_driver, *_args)
-    _driver.send @actions[:check], *_args
-  end
-
-  def set(_driver, *_args)
-    _driver.send @actions[:set], *_args
-  end
-
-  def clear(_driver, *_args)
-    _driver.send @actions[:clear], *_args
-  end
-
-  def checked?(_driver, *_args)
-    _driver.send @actions[:clear?], *_args
-  end
-
-  def set?(_driver, *_args)
-    _driver.send @actions[:set?], *_args
-  end
 end#CheckboxObject
 
 module PageObject

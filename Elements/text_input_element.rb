@@ -10,22 +10,6 @@ class TextInputElement < ElementObject
     end
     super
   end #initialize
-
-  def enter(_driver, *_args)
-    _driver.send @actions[:enter], *_args
-  end
-
-  def set(_driver, *_args)
-    _driver.send @actions[:set], *_args
-  end
-
-  def text(_driver, *_args)
-    _driver.send @actions[:text], *_args
-  end
-
-  def value(_driver, *_args)
-    _driver.send @actions[:value], *_args
-  end
 end #class text_input_object
 
 module PageObject
