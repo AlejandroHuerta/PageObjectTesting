@@ -13,13 +13,23 @@ class ElementObject
     @name = _name
     @selector = _hash[:selector]
     @children = [*_hash[:children]] if _hash.has_key? :children
-    @actions = (_hash.has_key?(:actions) ? [*_hash[:actions]] : [])
     @next_page = _hash[:next_page]
-    @method = _hash[:method]
+
+    if _hash[:actions].nil?
+      @actions = {:see => :see}
+    else
+      @actions = _hash[:actions].merge({:see => :see}){|key, oldval, newval| oldval}
+    end
+
+    @actions.merge!(ElementObject.actions_dictionary){|key, oldval, newval| newval}
+    @actions.merge!(self.class.actions_dictionary){|key, oldval, newval| newval}
   end #initialize
 
   def send(*_args)
-    if @actions.include?(_args[0]) || @actions.include?(_args[0].class) || @actions.include?(:all)
+    if @actions.has_key?(_args[0]) || @actions.has_key?(:all)
+      self.do_work *_args
+    elsif @actions.has_key? _args[0].class
+      _args.unshift(_args[0].class.to_s)
       self.do_work *_args
     elsif !@children.nil? && @children.length > 0
       found_child = get_child_name _args[0]
@@ -40,12 +50,9 @@ class ElementObject
   end #send
 
   def do_work(*_args)
-    if self.respond_to? *_args[0].to_s
-      result = self.__send__ *_args
-    else
-      native_element = @selector.nil? ? @driver : @driver.send(self.selector.type, self.selector.locator)
-      result = self.action native_element, *filter_actions(*_args)
-    end #else
+    native_element = @selector.nil? ? @driver : @driver.send(self.selector.type, self.selector.locator)
+
+    result = self.__send__ _args.shift, native_element, *_args
 
     if @next_page.nil?
       result
@@ -54,11 +61,9 @@ class ElementObject
     end #else
   end #do_work
 
-  #overridden by subclass
-  def action(_driver, *_args)
-    raise ArgumentError, new('A :method was not assigned') if @method.nil?
-    _driver.send @method
-  end #action
+  def see(_driver, *_args)
+    _driver.send @actions[:see], *_args
+  end
 
   protected
   def set_driver(_driver)
@@ -72,11 +77,6 @@ class ElementObject
     end #do
     child
   end #get_child_name
-
-  def filter_actions(*_args)
-    _args[0] = self.class.actions_dictionary[_args[0]] if self.class.actions_dictionary.has_key? _args[0]
-    _args
-  end #filter_actions
 end #class element_object
 
 module PageObject

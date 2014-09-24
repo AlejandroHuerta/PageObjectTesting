@@ -2,18 +2,22 @@ require_relative 'element_object'
 
 class ListElement < ElementObject
   def initialize(_driver, _name, _hash)
-    _hash[:actions] = Fixnum
+    if _hash[:actions].nil?
+      _hash[:actions] = {Fixnum => Fixnum}
+    else
+      _hash[:actions].merge!({Fixnum => Fixnum}){|key, oldval, newval| oldval}
+    end
     super
   end #initialize
 
-  def action(_driver, args)
-    if args[0].is_a? Fixnum
+  def Fixnum(_driver, *_args)
+    if _args[0].is_a? Fixnum
       @children.each do |child|
-        child.selector.locator[:index] = args[0]
+        child.selector.locator[:index] = _args[0]
       end #do
     end #if
     self
-  end #action
+  end
 end #class list_object
 
 module PageObject

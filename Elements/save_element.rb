@@ -1,16 +1,22 @@
 require_relative 'element_object'
 
 class SaveElement < ElementObject
-  attr_reader :value
-
   def initialize(_driver, _name, _hash)
-    _hash[:actions] = [:save, :value]
+    if _hash[:actions].nil?
+      _hash[:actions] = {:save => :save, :value => :value}
+    else
+      _hash[:actions].merge!({:save => :save, :value => :value}){|key, oldval, newval| oldval}
+    end
     super
   end #initialize
 
-  def action(_driver, *_args)
-    @value = _driver.send @method
-  end #action
+  def save(_driver, *_args)
+    @value = _driver.send @actions[:save], *_args
+  end
+
+  def value(_driver, *_args)
+    @value
+  end
 end #SaveElement
 
 module PageObject

@@ -22,6 +22,7 @@ end# WatirDriver
 
 module PageObject
   #Action filters for this driver
+  ElementObject.actions_dictionary = {see: :present?}
   TextInputElement.actions_dictionary = {enter: :value, text: :value}
   CheckboxElement.actions_dictionary = {check: :set, uncheck: :clear, checked?: :set?}
 end #PageObject

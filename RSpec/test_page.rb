@@ -21,7 +21,7 @@ class TestPage < Page
 
     create_save 'Reddit',
                 selector: selector(:a, id: 'link3'),
-                method: :text
+                actions: {save: :text}
 
     create_list 'List1',
                 selector: selector(:ul, id: 'list'),
