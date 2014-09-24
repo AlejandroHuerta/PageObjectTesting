@@ -22,6 +22,10 @@ describe Page do
       Page.page = TestPage.new @browser
     end
 
+    it '.send(:see)' do
+      expect(Page.page.send('Dud').send(:see)).to equal(true)
+    end
+
     describe ClickElement do
 
       it '.send(:click)' do
