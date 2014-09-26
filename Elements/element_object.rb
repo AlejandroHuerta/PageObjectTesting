@@ -12,6 +12,7 @@ class ElementObject
     @driver = _driver
     @name = _name
     @selector = _hash[:selector]
+    @children = []
     @children = [*_hash[:children]] if _hash.has_key? :children
     @next_page = _hash[:next_page]
 
@@ -32,7 +33,7 @@ class ElementObject
     elsif @actions.has_key? _args[0].class
       _args.unshift(_args[0].class.to_s)
       self.do_work *_args
-    elsif !@children.nil? && @children.length > 0
+    elsif @children.length > 0
       found_child = get_child_name _args[0]
       if found_child.nil?
         @children.each do |child|
