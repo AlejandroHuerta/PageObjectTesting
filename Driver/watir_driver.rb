@@ -18,6 +18,10 @@ class WatirDriver < AutomationDriver
       _result
     end #else
   end #process_result
+
+  def on_mouse_down
+    @driver.fire_event 'onmousedown'
+  end
 end# WatirDriver
 
 module PageObject

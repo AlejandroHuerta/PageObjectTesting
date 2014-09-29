@@ -32,6 +32,10 @@ describe Page do
       it '.send(:click)' do
         expect(Page.page.send('Dud').send(:click)).to be_instance_of(Array)
       end#do
+
+      it '.send(:click) driver added method is called' do
+        expect(Page.page.send('Mouse Down').send(:click)).to equal(true)
+      end
     end#ClickElement
 
     describe PageObject::TextInputElement do

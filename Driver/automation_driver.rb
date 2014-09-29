@@ -27,6 +27,10 @@ class AutomationDriver
   end #process_result
 
   def do_work(*_args)
-    self.process_result @driver.send *_args
-  end
+    if self.respond_to? _args[0]
+      self.__send__ *_args
+    else
+      self.process_result @driver.send *_args
+    end#else
+  end#do_work
 end #class automation_driver

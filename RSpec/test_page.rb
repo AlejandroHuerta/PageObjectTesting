@@ -13,6 +13,10 @@ class TestPage < Page
     create_click_object 'Dud',
                         selector: selector(:button, id: 'dud_button')
 
+    create_click_object 'Mouse Down',
+                        selector: selector(:button, id: 'dud_button'),
+                        actions: {click: :on_mouse_down}
+
     create_text_field 'First name',
                       selector: selector(:text_field, id: 'tf1')
 
