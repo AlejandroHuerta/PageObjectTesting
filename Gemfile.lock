@@ -5,6 +5,7 @@ GEM
     commonwatir (4.0.0)
     diff-lcs (1.2.5)
     ffi (1.9.0-x86-mingw32)
+    graphr (0.2.1)
     mini_magick (3.5.0)
       subexec (~> 0.2.1)
     mini_portile (0.6.0)
@@ -64,5 +65,6 @@ PLATFORMS
   x86-mingw32
 
 DEPENDENCIES
+  graphr
   rspec
   watir
