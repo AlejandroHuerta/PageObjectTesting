@@ -47,9 +47,22 @@ describe PageObject::ElementObject do
   it '.send(:see)' do
     e = PageObject::ElementObject.new @driver,
                                       'name',
-                                      selector: PageObject::Selector.new(:button, id: 'dud_button')
+                                      selector: PageObject::Selector.new(:button,
+                                                                         id: 'dud_button')
 
     expect(e.send(:see)).to equal(true)
+  end#do
+
+  it '.send(:text) on item with multiple selectors' do
+    e = PageObject::ElementObject.new @driver,
+                                      'name',
+                                      selector: [PageObject::Selector.new(:element,
+                                                                          id: 'unique_item'),
+                                                PageObject::Selector.new(:parent, nil),
+                                                PageObject::Selector.new(:parent, nil)],
+                                      actions: {text: :text}
+
+    expect(e.send(:text)).to include('Pastries')
   end#do
 
   describe PageObject::ClickElement do
@@ -77,7 +90,8 @@ describe PageObject::ElementObject do
     it '.send(:set, TEXT)' do
       e = PageObject::TextInputElement.new @driver,
                                            'First name',
-                                           selector: PageObject::Selector.new(:text_field, id: 'tf1')
+                                           selector: PageObject::Selector.new(:text_field,
+                                                                              id: 'tf1')
 
 
       expect(e.send(:set, 'Test')).to equal(nil)
@@ -86,7 +100,8 @@ describe PageObject::ElementObject do
     it '.send(:value)' do
       e = PageObject::TextInputElement.new @driver,
                                            'First name',
-                                           selector: PageObject::Selector.new(:text_field, id: 'tf1')
+                                           selector: PageObject::Selector.new(:text_field,
+                                                                              id: 'tf1')
 
       e.send(:set, 'Test')
       expect(e.send(:value)).to eq('Test')
@@ -98,7 +113,8 @@ describe PageObject::ElementObject do
     it '.send(#).send(:click)' do
       e = PageObject::ListElement.new @driver,
                                       'List1',
-                                      selector: PageObject::Selector.new(:ul, id: 'list'),
+                                      selector: PageObject::Selector.new(:ul,
+                                                                         id: 'list'),
                                       children: PageObject::ClickElement.new(@driver,
                                                                              'Result',
                                                                              selector: PageObject::Selector.new(:a))
@@ -109,7 +125,8 @@ describe PageObject::ElementObject do
     it '.send(#).send(NAME).send(:set, TEXT)' do
       e = PageObject::ListElement.new @driver,
                                       'List2',
-                                      selector: PageObject::Selector.new(:ul, id: 'compound_list'),
+                                      selector: PageObject::Selector.new(:ul,
+                                                                         id: 'compound_list'),
                                       children: [PageObject::ClickElement.new(@driver,
                                                                               'Link',
                                                                               selector: PageObject::Selector.new(:a)),
@@ -126,7 +143,8 @@ describe PageObject::ElementObject do
     it '.send(NAME).send(:check)' do
       e =  PageObject::CheckboxElement.new @driver,
                                            'I have a bike',
-                                           selector: PageObject::Selector.new(:checkbox, value: 'Bike')
+                                           selector: PageObject::Selector.new(:checkbox,
+                                                                              value: 'Bike')
 
       expect(e.send(:check)).to equal(nil)
     end#do
@@ -137,7 +155,8 @@ describe PageObject::ElementObject do
     it '.send(:save)' do
       e = PageObject::SaveElement.new @driver,
                                       'Reddit',
-                                      selector: PageObject::Selector.new(:a, id: 'link3'),
+                                      selector: PageObject::Selector.new(:a,
+                                                                         id: 'link3'),
                                       actions: {save: :text}
 
       expect(e.send(:save)).to eq('Reddit')
@@ -146,7 +165,8 @@ describe PageObject::ElementObject do
     it '.send(:value)' do
       e = PageObject::SaveElement.new @driver,
                                       'Reddit',
-                                      selector: PageObject::Selector.new(:a, id: 'link3'),
+                                      selector: PageObject::Selector.new(:a,
+                                                                         id: 'link3'),
                                       actions: {save: :text}
 
       e.send(:save)

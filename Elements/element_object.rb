@@ -12,9 +12,8 @@ module PageObject
     def initialize(_driver, _name, _hash)
       @driver = _driver
       @name = _name
-      @selector = _hash[:selector]
-      @children = []
-      @children = [*_hash[:children]] if _hash.has_key? :children
+      @selector = _hash.has_key?(:selector) ? [*_hash[:selector]] : []
+      @children = _hash.has_key?(:children) ? [*_hash[:children]] : []
       @next_page = _hash[:next_page]
 
       #merging actions together
@@ -38,11 +37,11 @@ module PageObject
         found_child = get_child_name _args[0]
         if found_child.nil?
           @children.each do |child|
-            child.set_driver self.driver.send self.selector.type, self.selector.locator
+            child.set_driver self.get_native_element
             child.send *_args
           end #do
         else
-          found_child.set_driver self.driver.send self.selector.type, self.selector.locator
+          found_child.set_driver self.get_native_element
           return found_child
         end #else
       elsif @driver.respond_to? _args[0]
@@ -53,7 +52,7 @@ module PageObject
     end #send
 
     def do_work(*_args)
-      native_element = @selector.nil? ? @driver : @driver.send(self.selector.type, self.selector.locator)
+      native_element = self.get_native_element
 
       #do we have a defined method for this call?
       #otherwise construct the default send
@@ -61,7 +60,7 @@ module PageObject
         result = self.__send__ _args.shift, native_element, *_args
       else
         result = native_element.send @actions[_args.shift.to_sym], *_args
-      end
+      end#else
 
       #if we have a next_page specified we generate it and assign it
       if @next_page.nil?
@@ -87,6 +86,21 @@ module PageObject
       end #do
       child
     end #get_child_name
+
+    def get_native_element
+      native_element = @driver
+
+      unless @selector.empty?
+        @selector.each do |selector|
+          if selector.locator.nil?
+            native_element = native_element.send selector.type
+          else
+            native_element = native_element.send selector.type, selector.locator
+          end#else
+        end#do
+      end#unless
+      native_element
+    end#get_native_element
   end #class element_object
 
   def element(_name, _hash = {})

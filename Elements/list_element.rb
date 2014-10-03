@@ -7,21 +7,21 @@ module PageObject
         _hash[:actions] = {Fixnum => Fixnum}
       else
         _hash[:actions].merge!({Fixnum => Fixnum}){|key, oldval, newval| oldval}
-      end
+      end#else
       super
     end #initialize
 
     def Fixnum(_driver, *_args)
       if _args[0].is_a? Fixnum
         @children.each do |child|
-          child.selector.locator[:index] = _args[0]
+          child.selector[0].locator[:index] = _args[0]
         end #do
       end #if
       self
-    end
+    end#Fixnum
   end #class list_object
 
   def list(_name, _hash = {})
     ListElement.new @driver, _name, _hash
-  end
-end
+  end#list
+end#PageObject
