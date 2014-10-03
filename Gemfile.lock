@@ -1,9 +1,11 @@
 GEM
+  remote: https://rubygems.org/
   specs:
     childprocess (0.5.3)
       ffi (~> 1.0, >= 1.0.11)
     commonwatir (4.0.0)
     diff-lcs (1.2.5)
+    ffi (1.9.0)
     ffi (1.9.0-x86-mingw32)
     graphr (0.2.1)
     mini_magick (3.5.0)
@@ -33,6 +35,9 @@ GEM
       rubyzip (~> 1.0)
       websocket (~> 1.0.4)
     subexec (0.2.3)
+    watir (5.0.0)
+      commonwatir (~> 4)
+      watir-webdriver
     watir (5.0.0-x86-mingw32)
       commonwatir (~> 4)
       watir-classic (~> 4.0)
