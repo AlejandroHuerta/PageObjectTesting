@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>PageObject Test page one</title>
+</head>
+<script language="javascript" type="text/javascript">
+    function btntest_onclick()
+    {
+        window.location.href = "../page_object_page_2.html";
+    }
+    function changeContentOnHover()
+    {
+        document.getElementById("hover_text").innerHTML='Hover Target - Success';
+    }
+    function allowDrop(ev)
+    {
+        ev.preventDefault();
+    }
+    function drag(ev)
+    {
+        ev.dataTransfer.setData("Text", ev.target.id);
+    }
+    function onDrop()
+    {
+        document.getElementById("drag_test").innerHTML='Dragged - Success';
+    }
+</script>
+<body>
+<h3 style="text-align: center;">Testing page 1 for PageObject</h3>
+<h3 style="text-align: center; font-size: medium;">Other H3 header with differing style</h3>
+<div id="drag_test" ondrop="onDrop(this);" ondragover="allowDrop(event);">Not dragged</div>
+<div id="draggable" draggable="true" ondragstart="drag()">draggable</div>
+<form id='form' action="page_object_page_2.html" method="POST">
+    <p>Email1:<input id="email"></input><a href="page_object_page_2.html">Submit</a></p>
+    <p>Email2:<input id=" email2"></input><a href="page_object_page_2.html">      Submit2</a></p>
+    <p>Email3:<input id="email3 "></input><div id="submit3"><a href="page_object_page_2.html">Submit3 </a></div></p>
+    <p><input type="button" value="Click to go to next page"></p>
+    <p><a href="page_object_page_2.html">should search and click this</a></p>
+    <p><button onclick="return btntest_onclick()">Undefined button that goes to next page</button></p>
+</form>
+<button id="form2button">Undefined button that has same id as right one below and does nothing</button>
+<form id="form2" action="page_object_page_2.html" method="POST">
+    <button>Defined button that goes to next page</button>
+    <button id="form2button">Defined button2</button>
+</form>
+<li id="element2">Fake Element 2</li>
+<ul id="List of elements">
+    <li class="wat">Element 1<div><p>Deep child in list</p></div></li>
+    <li id="element2">Element 2</li>
+    <li name="element3">Element 3</li>
+</ul>
+<ul id="collection_test">
+    <li id="collection_test_li">first item</li>
+    <li id="collection_test_li">second item</li>
+    <li id="collection_test_li">third item</li>
+</ul>
+<div id="list_parent">
+    <ul id="list_test">
+        <li id="list_test_1">Test list element 1</li>
+        <li id="list_test_2">Test list element 2</li>
+        <li id="list_test_3">Test list element 3</li>
+    </ul>
+</div>
+<ul id="double_array_test">
+    <li class="double_array_test_row" id="row_1">
+        <ul class="double_array_test_dimension_two">
+            <li class="double_array_test_dimension_two_row">
+                first item
+            </li>
+            <li class="double_array_test_dimension_two_row">
+                second item
+            </li>
+            <li class="double_array_test_dimension_two_row">
+                third item
+            </li>
+        </ul>
+    </li>
+    <li class="double_array_test_row" id="row_2">
+        <ul class="double_array_test_dimension_two">
+            <li class="double_array_test_dimension_two_row">
+                fourth item
+            </li>
+            <li class="double_array_test_dimension_two_row">
+                fifth item
+            </li>
+        </ul>
+    </li>
+</ul>
+<ul id="decorator_test">
+    <div class="decorated">
+        <li class="decorator_test_li_1">incorrect</li>
+        <li class="decorator_test_li_1" style="color:blue"><a href="page_object_page_2.html" id="decorator_test_child_element">Child element of decorator_test</a></li>
+        <li class="decorator_test_li_1">incorrect</li>
+    </div>
+    <div class="notdecorated"><li id="decorator_test_li_2" style="color:green"></li></div>
+</ul>
+
+<button id="hover_target" onmouseover ="changeContentOnHover();">Target</button>
+<span id="hover_text">Hover Target</span><br>
+Incorrect link&nbsp;<a href="about:blank">page2</a>
+<div id="link test">
+    Correct link&nbsp;<a href="page_object_page_2.html">page2</a>
+</div>
+<select id="select_test">
+    <option value="value1">first 1st</option>
+    <option value="value2">second 2nd</option>
+    <option value="value3">third 3rd</option>
+    <option value="value4">fourth 4th</option>
+    <option value="seventh">fifth 5th</option>
+</select>
+<form id="checkboxparent" action="">
+    <input type="checkbox" name="checkboxtest1" value="test1">Checkbox one
+    <input type="checkbox" name="checkboxtest2" value="test2">Checkbox two
+    <input type="checkbox" name="checkboxtest3" value="test3">Checkbox three
+    <input type="checkbox" name="checkboxtest4" value="test4" checked>Checkebox four
+</form>
+</body>
+</html>
