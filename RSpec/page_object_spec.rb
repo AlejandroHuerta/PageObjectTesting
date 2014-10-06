@@ -1,8 +1,7 @@
 require 'rspec'
-require_relative 'w3_page'
-require_relative 'test_page'
 require_relative '../PageObject/page_object'
 require_relative '../Driver/watir_driver'
+require_relative '../PageObject/page'
 
 class Page1 < Page
   def initialize(_driver)
@@ -50,7 +49,7 @@ describe PageObject::ElementObject do
 
   before(:all) do
     @driver = WatirDriver.new
-    Page.page = TestPage.new @driver
+    Page.page = Page1.new @driver
   end
 
   after(:all) do
@@ -58,14 +57,14 @@ describe PageObject::ElementObject do
   end
 
   before(:each) do
-    @driver.send :goto, "file://#{Dir.pwd}\\TestPage.html"
+    @driver.send :goto, "file://#{Dir.pwd}\\page_object_page_1.html"
   end#do
 
   it '.send(:see)' do
     e = PageObject::ElementObject.new driver: @driver,
                                       name: 'name',
                                       selector: PageObject::Selector.new(type: :button,
-                                                                         locator: {id: 'dud_button'})
+                                                                         locator: {id: 'form2button'})
 
     expect(e.send(:see)).to equal(true)
   end#do
@@ -74,30 +73,30 @@ describe PageObject::ElementObject do
     e = PageObject::ElementObject.new driver: @driver,
                                       name: 'name',
                                       selector: [PageObject::Selector.new(type: :element,
-                                                                          locator: {id: 'unique_item'}),
+                                                                          locator: {text: 'Deep child in list'}),
                                                 PageObject::Selector.new(type: :parent,
                                                                          locator: nil),
                                                 PageObject::Selector.new(type: :parent,
                                                                          locator: nil)],
                                       actions: {text: :text}
 
-    expect(e.send(:text)).to include('Pastries')
+    expect(e.send(:text)).to include('Element 1')
   end#do
 
   it '.send(:see_text_as, TEXT)' do
     e = PageObject::ElementObject.new driver: @driver,
                                       name: 'name',
                                       selector: PageObject::Selector.new(type: :element,
-                                                                         locator: {id: 'unique_item'}),
+                                                                         locator: {id: 'element2'}),
                                       actions: {see_text_as: :see_text_as}
 
-    expect(e.send(:see_text_as, 'Croissant')).to equal(true)
+    expect(e.send(:see_text_as, 'Fake Element 2')).to equal(true)
   end
 
   it '.send(:see) element with no type specified' do
     e = PageObject::ElementObject.new driver: @driver,
                                       name: 'name',
-                                      selector: PageObject::Selector.new(locator: {id: 'unique_item'})
+                                      selector: PageObject::Selector.new(locator: {id: 'element2'})
 
     expect(e.send(:see)).to equal(true)
   end
@@ -108,7 +107,7 @@ describe PageObject::ElementObject do
       e = PageObject::ClickElement.new driver: @driver,
                                        name: 'name',
                                        selector: PageObject::Selector.new(type: :button,
-                                                                          locator: {id: 'dud_button'})
+                                                                          locator: {id: 'form2button'})
 
       expect(e.send(:click)).to be_instance_of(Array)
     end#do
@@ -117,7 +116,7 @@ describe PageObject::ElementObject do
       e = PageObject::ClickElement.new driver: @driver,
                                        name: 'name',
                                        selector: PageObject::Selector.new(type: :button,
-                                                                          locator: {id: 'dud_button'}),
+                                                                          locator: {id: 'form2button'}),
                                        actions: {click: :on_mouse_down}
 
       expect(e.send(:click)).to equal(true)
@@ -130,7 +129,7 @@ describe PageObject::ElementObject do
       e = PageObject::TextInputElement.new driver: @driver,
                                            name: 'First name',
                                            selector: PageObject::Selector.new(type: :text_field,
-                                                                              locator: {id: 'tf1'})
+                                                                              locator: {id: 'email'})
 
 
       expect(e.send(:set, 'Test')).to equal(nil)
@@ -140,7 +139,7 @@ describe PageObject::ElementObject do
       e = PageObject::TextInputElement.new driver: @driver,
                                            name: 'First name',
                                            selector: PageObject::Selector.new(type: :text_field,
-                                                                              locator: {id: 'tf1'})
+                                                                              locator: {id: 'email'})
 
       e.send(:set, 'Test')
       expect(e.send(:value)).to eq('Test')
@@ -152,11 +151,11 @@ describe PageObject::ElementObject do
     it '.send(#).send(:click)' do
       e = PageObject::ListElement.new driver: @driver,
                                       name: 'List1',
-                                      selector: PageObject::Selector.new(type: :ul,
-                                                                         locator: {id: 'list'}),
+                                      selector: PageObject::Selector.new(type: :form,
+                                                                         locator: {id: 'form2'}),
                                       children: PageObject::ClickElement.new(driver: @driver,
                                                                              name: 'Result',
-                                                                             selector: PageObject::Selector.new(type: :a))
+                                                                             selector: PageObject::Selector.new(type: :button))
 
       expect(e.send(1).send(:click)).to be_instance_of(Array)
     end#do
@@ -164,8 +163,8 @@ describe PageObject::ElementObject do
     it '.send(#).send(NAME).send(:set, TEXT)' do
       e = PageObject::ListElement.new driver: @driver,
                                       name: 'List2',
-                                      selector: PageObject::Selector.new(type: :ul,
-                                                                         locator: {id: 'compound_list'}),
+                                      selector: PageObject::Selector.new(type: :form,
+                                                                         locator: {id: 'form'}),
                                       children: [PageObject::ClickElement.new(driver: @driver,
                                                                               name: 'Link',
                                                                               selector: PageObject::Selector.new(type: :a)),
@@ -181,9 +180,9 @@ describe PageObject::ElementObject do
 
     it '.send(NAME).send(:check)' do
       e =  PageObject::CheckboxElement.new driver: @driver,
-                                           name: 'I have a bike',
+                                           name: 'name',
                                            selector: PageObject::Selector.new(type: :checkbox,
-                                                                              locator: {value: 'Bike'})
+                                                                              locator: {name: 'checkboxtest1'})
 
       expect(e.send(:check)).to equal(nil)
     end#do
@@ -193,23 +192,23 @@ describe PageObject::ElementObject do
 
     it '.send(:save)' do
       e = PageObject::SaveElement.new driver: @driver,
-                                      name: 'Reddit',
-                                      selector: PageObject::Selector.new(type: :a,
-                                                                         locator: {id: 'link3'}),
+                                      name: 'name',
+                                      selector: PageObject::Selector.new(type: :li,
+                                                                         locator: {id: 'element2'}),
                                       actions: {save: :text}
 
-      expect(e.send(:save)).to eq('Reddit')
+      expect(e.send(:save)).to eq('Fake Element 2')
     end#do
 
     it '.send(:value)' do
       e = PageObject::SaveElement.new driver: @driver,
-                                      name: 'Reddit',
-                                      selector: PageObject::Selector.new(type: :a,
-                                                                         locator: {id: 'link3'}),
+                                      name: 'name',
+                                      selector: PageObject::Selector.new(type: :li,
+                                                                         locator: {id: 'element2'}),
                                       actions: {save: :text}
 
       e.send(:save)
-      expect(e.send(:value)).to eq('Reddit')
+      expect(e.send(:value)).to eq('Fake Element 2')
     end#do
   end#SaveElement
 end#ElementObject
