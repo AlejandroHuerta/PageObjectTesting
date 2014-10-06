@@ -70,10 +70,6 @@ module PageObject
       end #else
     end #do_work
 
-    def see(_driver, *_args)
-      _driver.send @actions[:see], *_args
-    end#see
-
     protected
     def set_driver(_driver)
       @driver = _driver
