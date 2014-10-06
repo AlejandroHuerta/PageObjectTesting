@@ -8,7 +8,16 @@ class Page1 < Page
   def initialize(_driver)
     super
 
+    create_click_object name: 'Page2',
+                        selector: selector(type: :link,
+                                           locator: {text: 'Submit2'}),
+                        next_page: Page2
+  end
+end
 
+class Page2 < Page
+  def initialize(_driver)
+    super
   end
 end
 
@@ -17,7 +26,7 @@ describe Page do
 
   before(:all) do
     @browser = WatirDriver.new
-    Page.page = TestPage.new @browser
+    Page.page = Page1.new @browser
   end
 
   after(:all) do
@@ -25,14 +34,14 @@ describe Page do
   end
 
   it '.send(NAME)' do
-    expect(Page.page.send('W3Schools')).to be_instance_of(PageObject::ClickElement)
+    expect(Page.page.send('Page2')).to be_instance_of(PageObject::ClickElement)
   end
 
   it 'changes pages' do
-    @browser.send :goto, "file://#{Dir.pwd}\\TestPage.html"
+    @browser.send :goto, "file://#{Dir.pwd}\\page_object_page_1.html"
 
-    Page.page.send('W3Schools').send(:click)
-    expect(Page.page).to be_instance_of(W3Page)
+    Page.page.send('Page2').send(:click)
+    expect(Page.page).to be_instance_of(Page2)
   end#do
 
 end#Page
