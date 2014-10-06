@@ -6,7 +6,7 @@ module PageObject
     def initialize(_hash = {})
       raise ArgumentError unless _hash.is_a? Hash
       @type = _hash.delete(:type) { :element }
-      @locator = _hash.has_key?(:ignore) ? nil : _hash
+      @locator = _hash.has_key?(:locator) ? _hash[:locator] : {}
     end #initialize
   end #class selector
 
