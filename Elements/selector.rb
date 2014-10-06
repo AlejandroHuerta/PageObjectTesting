@@ -3,13 +3,14 @@ module PageObject
   class Selector
     attr_accessor :type, :locator
 
-    def initialize(_type, _locator = {})
-      @type = _type
-      @locator = _locator
+    def initialize(_hash = {})
+      raise ArgumentError unless _hash.is_a? Hash
+      @type = _hash.delete(:type) { :element }
+      @locator = _hash.has_key?(:ignore) ? nil : _hash
     end #initialize
   end #class selector
 
-  def selector(_type, _locator = {})
-    Selector.new _type, _locator
+  def selector(_hash)
+    Selector.new _hash
   end#selector
 end#PageObject

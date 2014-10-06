@@ -6,7 +6,7 @@ class W3Page < Page
     super
 
     create_click_object 'HTML Tutorial',
-                        selector: selector(:a, text: 'HTML Tutorial')
+                        selector: selector(type: :a, text: 'HTML Tutorial')
 
   end
 end

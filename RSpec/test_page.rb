@@ -6,38 +6,38 @@ class TestPage < Page
     super
 
     create_click_object 'Google',
-                        selector: selector(:a, id: 'link1')
+                        selector: selector(type: :a, id: 'link1')
     create_click_object 'W3Schools',
-                        selector: selector(:a, id: 'link2'),
+                        selector: selector(type: :a, id: 'link2'),
                         next_page: W3Page
     create_click_object 'Dud',
-                        selector: selector(:button, id: 'dud_button')
+                        selector: selector(type: :button, id: 'dud_button')
 
     create_click_object 'Mouse Down',
-                        selector: selector(:button, id: 'dud_button'),
+                        selector: selector(type: :button, id: 'dud_button'),
                         actions: {click: :on_mouse_down}
 
     create_text_field 'First name',
-                      selector: selector(:text_field, id: 'tf1')
+                      selector: selector(type: :text_field, id: 'tf1')
 
     create_checkbox 'I have a bike',
-                    selector: selector(:checkbox, value: 'Bike')
+                    selector: selector(type: :checkbox, value: 'Bike')
 
     create_save 'Reddit',
-                selector: selector(:a, id: 'link3'),
+                selector: selector(type: :a, id: 'link3'),
                 actions: {save: :text}
 
     create_list 'List1',
-                selector: selector(:ul, id: 'list'),
+                selector: selector(type: :ul, id: 'list'),
                 children: click_object('Result',
-                                       selector: selector(:a))
+                                       selector: selector(type: :a))
 
     create_list 'List2',
-                selector: selector(:ul, id: 'compound_list'),
+                selector: selector(type: :ul, id: 'compound_list'),
                 children: [click_object('Link',
-                                        selector: selector(:a)),
+                                        selector: selector(type: :a)),
                            text_field('TextField',
-                                      selector: selector(:text_field))]
+                                      selector: selector(type: :text_field))]
 
 
   end
