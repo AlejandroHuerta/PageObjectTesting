@@ -69,6 +69,23 @@ describe PageObject::ElementObject do
     expect(e.send(:see)).to equal(true)
   end#do
 
+  it '.send(:hover) -- added action' do
+    e = PageObject::ElementObject.new driver: @driver,
+                                      name: 'name',
+                                      selector: PageObject::Selector.new(type: :button,
+                                                                         locator: {id: 'hover_target'}),
+                                      actions: {hover: :hover}
+
+    f = PageObject::ElementObject.new driver: @driver,
+                                      name: 'name',
+                                      selector: PageObject::Selector.new(type: :span,
+                                                                         locator: {id: 'hover_text'}),
+                                      actions: {text: :text}
+
+    expect(e.send(:hover)).to equal(nil)
+    expect(f.send(:text)).to eq('Hover Target - Success')
+  end
+
   it '.send(:text) on item with multiple selectors' do
     e = PageObject::ElementObject.new driver: @driver,
                                       name: 'name',
