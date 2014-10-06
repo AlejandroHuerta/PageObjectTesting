@@ -148,14 +148,17 @@ describe PageObject::ElementObject do
 
   describe PageObject::ListElement do
 
-    it '.send(#).send(:click)' do
+    it '.send(#).send(:click) -- action pass through' do
       e = PageObject::ListElement.new driver: @driver,
                                       name: 'List1',
                                       selector: PageObject::Selector.new(type: :form,
-                                                                         locator: {id: 'form2'}),
-                                      children: PageObject::ClickElement.new(driver: @driver,
-                                                                             name: 'Result',
-                                                                             selector: PageObject::Selector.new(type: :button))
+                                                                         locator: {id: 'form'}),
+                                      children: [PageObject::ClickElement.new(driver: @driver,
+                                                                              name: 'Link',
+                                                                              selector: PageObject::Selector.new(type: :a)),
+                                                 PageObject::TextInputElement.new(driver: @driver,
+                                                                                  name: 'TextField',
+                                                                                  selector: PageObject::Selector.new(type: :text_field))]
 
       expect(e.send(1).send(:click)).to be_instance_of(Array)
     end#do

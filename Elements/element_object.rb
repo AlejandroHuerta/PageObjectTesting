@@ -37,8 +37,9 @@ module PageObject
         found_child = get_child_name _args[0]
         if found_child.nil?
           @children.each do |child|
+            next unless child.actions.has_key? _args[0]
             child.set_driver self.get_native_element
-            child.send *_args
+            return child.send *_args
           end #do
         else
           found_child.set_driver self.get_native_element
