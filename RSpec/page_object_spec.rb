@@ -45,8 +45,8 @@ describe PageObject::ElementObject do
   end#do
 
   it '.send(:see)' do
-    e = PageObject::ElementObject.new @driver,
-                                      'name',
+    e = PageObject::ElementObject.new driver: @driver,
+                                      name: 'name',
                                       selector: PageObject::Selector.new(type: :button,
                                                                          id: 'dud_button')
 
@@ -54,8 +54,8 @@ describe PageObject::ElementObject do
   end#do
 
   it '.send(:text) on item with multiple selectors' do
-    e = PageObject::ElementObject.new @driver,
-                                      'name',
+    e = PageObject::ElementObject.new driver: @driver,
+                                      name: 'name',
                                       selector: [PageObject::Selector.new(type: :element,
                                                                           id: 'unique_item'),
                                                 PageObject::Selector.new(type: :parent,
@@ -68,8 +68,8 @@ describe PageObject::ElementObject do
   end#do
 
   it '.send(:see_text_as, TEXT)' do
-    e = PageObject::ElementObject.new @driver,
-                                      'name',
+    e = PageObject::ElementObject.new driver: @driver,
+                                      name: 'name',
                                       selector: PageObject::Selector.new(type: :element,
                                                                           id: 'unique_item'),
                                       actions: {see_text_as: :see_text_as}
@@ -78,8 +78,8 @@ describe PageObject::ElementObject do
   end
 
   it '.send(:see) element with no type specified' do
-    e = PageObject::ElementObject.new @driver,
-                                      'name',
+    e = PageObject::ElementObject.new driver: @driver,
+                                      name: 'name',
                                       selector: PageObject::Selector.new(id: 'unique_item')
 
     expect(e.send(:see)).to equal(true)
@@ -88,16 +88,16 @@ describe PageObject::ElementObject do
   describe PageObject::ClickElement do
 
     it '.send(:click)' do
-      e = PageObject::ClickElement.new @driver,
-                                       'name',
+      e = PageObject::ClickElement.new driver: @driver,
+                                       name: 'name',
                                        selector: PageObject::Selector.new(type: :button, id: 'dud_button')
 
       expect(e.send(:click)).to be_instance_of(Array)
     end#do
 
     it '.send(:click) driver added method is called' do
-      e = PageObject::ClickElement.new @driver,
-                                       'name',
+      e = PageObject::ClickElement.new driver: @driver,
+                                       name: 'name',
                                        selector: PageObject::Selector.new(type: :button, id: 'dud_button'),
                                        actions: {click: :on_mouse_down}
 
@@ -108,8 +108,8 @@ describe PageObject::ElementObject do
   describe PageObject::TextInputElement do
 
     it '.send(:set, TEXT)' do
-      e = PageObject::TextInputElement.new @driver,
-                                           'First name',
+      e = PageObject::TextInputElement.new driver: @driver,
+                                           name: 'First name',
                                            selector: PageObject::Selector.new(type: :text_field,
                                                                               id: 'tf1')
 
@@ -118,8 +118,8 @@ describe PageObject::ElementObject do
     end#do
 
     it '.send(:value)' do
-      e = PageObject::TextInputElement.new @driver,
-                                           'First name',
+      e = PageObject::TextInputElement.new driver: @driver,
+                                           name: 'First name',
                                            selector: PageObject::Selector.new(type: :text_field,
                                                                               id: 'tf1')
 
@@ -131,27 +131,27 @@ describe PageObject::ElementObject do
   describe PageObject::ListElement do
 
     it '.send(#).send(:click)' do
-      e = PageObject::ListElement.new @driver,
-                                      'List1',
+      e = PageObject::ListElement.new driver: @driver,
+                                      name: 'List1',
                                       selector: PageObject::Selector.new(type: :ul,
                                                                          id: 'list'),
-                                      children: PageObject::ClickElement.new(@driver,
-                                                                             'Result',
+                                      children: PageObject::ClickElement.new(driver: @driver,
+                                                                             name: 'Result',
                                                                              selector: PageObject::Selector.new(type: :a))
 
       expect(e.send(1).send(:click)).to be_instance_of(Array)
     end#do
 
     it '.send(#).send(NAME).send(:set, TEXT)' do
-      e = PageObject::ListElement.new @driver,
-                                      'List2',
+      e = PageObject::ListElement.new driver: @driver,
+                                      name: 'List2',
                                       selector: PageObject::Selector.new(type: :ul,
                                                                          id: 'compound_list'),
-                                      children: [PageObject::ClickElement.new(@driver,
-                                                                              'Link',
+                                      children: [PageObject::ClickElement.new(driver: @driver,
+                                                                              name: 'Link',
                                                                               selector: PageObject::Selector.new(type: :a)),
-                                                 PageObject::TextInputElement.new(@driver,
-                                                                                  'TextField',
+                                                 PageObject::TextInputElement.new(driver: @driver,
+                                                                                  name: 'TextField',
                                                                                   selector: PageObject::Selector.new(type: :text_field))]
 
       expect(e.send(0).send('TextField').send(:set, 'Test')).to equal(nil)
@@ -161,8 +161,8 @@ describe PageObject::ElementObject do
   describe PageObject::CheckboxElement do
 
     it '.send(NAME).send(:check)' do
-      e =  PageObject::CheckboxElement.new @driver,
-                                           'I have a bike',
+      e =  PageObject::CheckboxElement.new driver: @driver,
+                                           name: 'I have a bike',
                                            selector: PageObject::Selector.new(type: :checkbox,
                                                                               value: 'Bike')
 
@@ -173,8 +173,8 @@ describe PageObject::ElementObject do
   describe PageObject::SaveElement do
 
     it '.send(:save)' do
-      e = PageObject::SaveElement.new @driver,
-                                      'Reddit',
+      e = PageObject::SaveElement.new driver: @driver,
+                                      name: 'Reddit',
                                       selector: PageObject::Selector.new(type: :a,
                                                                          id: 'link3'),
                                       actions: {save: :text}
@@ -183,8 +183,8 @@ describe PageObject::ElementObject do
     end#do
 
     it '.send(:value)' do
-      e = PageObject::SaveElement.new @driver,
-                                      'Reddit',
+      e = PageObject::SaveElement.new driver: @driver,
+                                      name: 'Reddit',
                                       selector: PageObject::Selector.new(type: :a,
                                                                          id: 'link3'),
                                       actions: {save: :text}

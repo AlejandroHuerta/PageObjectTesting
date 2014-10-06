@@ -9,9 +9,9 @@ module PageObject
 
     attr_reader :driver, :name, :selector, :children, :actions, :next_page
 
-    def initialize(_driver, _name, _hash)
-      @driver = _driver
-      @name = _name
+    def initialize(_hash)
+      @driver = _hash.has_key?(:driver) ? _hash.delete(:driver) : raise(ArgumentError.new('No driver passed'))
+      @name = _hash.has_key?(:name) ? _hash[:name] : raise(ArgumentError.new('No name given'))
       @selector = _hash.has_key?(:selector) ? [*_hash[:selector]] : []
       @children = _hash.has_key?(:children) ? [*_hash[:children]] : []
       @next_page = _hash[:next_page]
@@ -99,7 +99,8 @@ module PageObject
     end#get_native_element
   end #class element_object
 
-  def element(_name, _hash = {})
-    ElementObject.new @driver, _name, _hash
+  def element(_hash)
+    _hash[:driver] = @driver unless _hash.has_key? :driver
+    ElementObject.new  _hash
   end #element
 end #PageObject

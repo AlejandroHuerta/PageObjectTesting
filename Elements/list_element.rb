@@ -2,7 +2,7 @@ require_relative 'element_object'
 
 module PageObject
   class ListElement < ElementObject
-    def initialize(_driver, _name, _hash)
+    def initialize(_hash)
       if _hash[:actions].nil?
         _hash[:actions] = {Fixnum => Fixnum}
       else
@@ -21,7 +21,8 @@ module PageObject
     end#Fixnum
   end #class list_object
 
-  def list(_name, _hash = {})
-    ListElement.new @driver, _name, _hash
+  def list(_hash)
+    _hash[:driver] = @driver unless _hash.has_key? :driver
+    ListElement.new _hash
   end#list
 end#PageObject

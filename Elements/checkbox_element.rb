@@ -2,7 +2,7 @@ require_relative 'element_object'
 
 module PageObject
   class CheckboxElement < ElementObject
-    def initialize(_driver, _name, _hash)
+    def initialize(_hash)
       if _hash[:actions].nil?
         _hash[:actions] = {:check => :check, :set => :set, :clear => :clear, :checked? => :checked?, :set? => :set?}
       else
@@ -12,7 +12,8 @@ module PageObject
     end#initialize
   end#CheckboxObject
 
-  def checkbox_object(_name, _hash = {})
-    CheckboxElement.new @driver, _name, _hash
+  def checkbox_object(_hash)
+    _hash[:driver] = @driver unless _hash.has_key? :driver
+    CheckboxElement.new _hash
   end
 end

@@ -2,7 +2,7 @@ require_relative 'element_object'
 
 module PageObject
   class ClickElement < ElementObject
-    def initialize(_driver, _name, _hash)
+    def initialize(_hash)
       if _hash[:actions].nil?
         _hash[:actions] = {:click => :click}
       else
@@ -13,7 +13,8 @@ module PageObject
   end #click_object
 
 
-  def click_object(_name, _hash = {})
-    ClickElement.new @driver, _name, _hash
+  def click_object(_hash)
+    _hash[:driver] = @driver unless _hash.has_key? :driver
+    ClickElement.new _hash
   end
 end

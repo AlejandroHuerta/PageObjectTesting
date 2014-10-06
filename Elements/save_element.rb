@@ -2,7 +2,7 @@ require_relative 'element_object'
 
 module PageObject
   class SaveElement < ElementObject
-    def initialize(_driver, _name, _hash)
+    def initialize(_hash)
       if _hash[:actions].nil?
         _hash[:actions] = {:save => :save, :value => :value}
       else
@@ -20,7 +20,8 @@ module PageObject
     end#value
   end #SaveElement
 
-  def save_element(_name, _hash = {})
-    SaveElement.new @driver, _name, _hash
+  def save_element(_hash)
+    _hash[:driver] = @driver unless _hash.has_key? :driver
+    SaveElement.new _hash
   end #save_element
 end #PageObject
