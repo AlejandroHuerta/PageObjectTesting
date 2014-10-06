@@ -65,6 +65,16 @@ describe PageObject::ElementObject do
     expect(e.send(:text)).to include('Pastries')
   end#do
 
+  it '.send(:see_text_as, TEXT)' do
+    e = PageObject::ElementObject.new @driver,
+                                      'name',
+                                      selector: PageObject::Selector.new(:element,
+                                                                          id: 'unique_item'),
+                                      actions: {see_text_as: :see_text_as}
+
+    expect(e.send(:see_text_as, 'Croissant')).to equal(true)
+  end
+
   describe PageObject::ClickElement do
 
     it '.send(:click)' do
