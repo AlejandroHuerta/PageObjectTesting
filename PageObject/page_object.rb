@@ -32,6 +32,28 @@ module PageObject
     create_element_object :save_element, _hash
   end
 
+  class ElementObject
+    def do_work(*_args)
+      #lets get our driver element with our selectors
+      native_element = self.get_native_element
+
+      #do we have a defined method for this call?
+      #otherwise construct the default send
+      if self.respond_to? _args[0]
+        result = self.__send__ _args.shift, native_element, *_args
+      else
+        result = native_element.send @actions[_args.shift.to_sym], *_args
+      end#else
+
+      #if we have a next_page specified we generate it and assign it
+      if @next_page.nil?
+        result
+      else
+        Page.page = Page.build_page(@next_page)
+      end #else
+    end #do_work
+  end#ElementObject
+
   protected
   def create_element_object(_element, _hash)
     raise ArgumentError, 'Argument not a hash' unless _hash.instance_of? Hash
