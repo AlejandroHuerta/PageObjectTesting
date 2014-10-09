@@ -42,14 +42,14 @@ module PageObject
       if self.respond_to? _args[0]
         result = self.__send__ _args.shift, native_element, *_args
       else
-        result = native_element.send @actions[_args.shift.to_sym], *_args
+        result = native_element.send @params[:actions][_args.shift.to_sym], *_args
       end#else
 
       #if we have a next_page specified we generate it and assign it
-      if @next_page.nil?
+      if @params[:next_page].nil?
         result
       else
-        Page.page = Page.build_page(@next_page)
+        Page.page = Page.build_page(@params[:next_page])
       end #else
     end #do_work
   end#ElementObject

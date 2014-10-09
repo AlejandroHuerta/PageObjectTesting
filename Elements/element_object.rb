@@ -7,43 +7,44 @@ module PageObject
     inheritable_attributes :actions_dictionary
     @actions_dictionary = {}
 
-    attr_reader :driver, :name, :selector, :children, :actions, :next_page
+    attr_reader :params
 
     def initialize(_hash)
-      @driver = _hash.has_key?(:driver) ? _hash.delete(:driver) : raise(ArgumentError.new('No driver passed'))
-      @name = _hash.has_key?(:name) ? _hash[:name] : raise(ArgumentError.new('No name given'))
-      @selector = _hash.has_key?(:selector) ? [*_hash[:selector]] : []
-      @children = _hash.has_key?(:children) ? [*_hash[:children]] : []
-      @next_page = _hash[:next_page]
+      #we keep the hash passed in to allow for easier extendability
+      @params = _hash
+      raise ArgumentError.new 'No driver passed' unless @params.has_key? :driver
+      raise ArgumentError.new 'No name given' unless @params.has_key? :name
+      @params[:selector] = @params.has_key?(:selector) ? [*@params[:selector]] : []
+      @params[:children] = @params.has_key?(:children) ? [*@params[:children]] : []
 
       #merging actions together
-      if _hash[:actions].nil?
-        @actions = {:see => :see}
+      if @params.has_key? :actions
+        @params[:actions] = @params[:actions].merge({:see => :see}){|key, oldval, newval| oldval}
       else
-        @actions = _hash[:actions].merge({:see => :see}){|key, oldval, newval| oldval}
+        @params[:actions] = {:see => :see}
       end#else
 
-      @actions.merge!(ElementObject.actions_dictionary){|key, oldval, newval| newval}
-      @actions.merge!(self.class.actions_dictionary){|key, oldval, newval| newval}
+      @params[:actions].merge!(ElementObject.actions_dictionary){|key, oldval, newval| newval}
+      @params[:actions].merge!(self.class.actions_dictionary){|key, oldval, newval| newval}
     end #initialize
 
     #checks if the incoming method call is something we can handle. otherwise it sends it to our super class
     def send(*_args)
       #let's check if we respond to this action
-      if @actions.has_key?(_args[0]) || @actions.has_key?(:all)
+      if @params[:actions].has_key?(_args[0]) || @params[:actions].has_key?(:all)
         self.do_work *_args
       #is this an class type of action such as Fixnum?
-      elsif @actions.has_key? _args[0].class
+      elsif @params[:actions].has_key? _args[0].class
         _args.unshift(_args[0].class.to_s)
         self.do_work *_args
       #we don't respond to this action or it's a child's name
-      elsif @children.length > 0
+      elsif @params[:children].length > 0
         found_child = get_child_name _args[0]
         #Did we find the child? if not it's probably an action for one of them
         if found_child.nil?
           #go through all the children until we find one that responds to the action
-          @children.each do |child|
-            next unless child.actions.has_key? _args[0]
+          @params[:children].each do |child|
+            next unless child.params[:actions].has_key? _args[0]
             child.set_driver self.get_native_element
             return child.send *_args
           end #do
@@ -54,8 +55,8 @@ module PageObject
           return found_child
         end #else
       #it was neither an action we respond to nor a child's name perhaps our driver will accept
-      elsif @driver.respond_to? _args[0]
-        @driver.send *_args
+      elsif @params[:driver].respond_to? _args[0]
+        @params[:driver].send *_args
       #last resort, it must be a method for our super class
       else
         super
@@ -72,30 +73,30 @@ module PageObject
       if self.respond_to? _args[0]
         self.__send__ _args.shift, native_element, *_args
       else
-        native_element.send @actions[_args.shift.to_sym], *_args
+        native_element.send @params[:actions][_args.shift.to_sym], *_args
       end#else
     end #do_work
 
     protected
     def set_driver(_driver)
-      @driver = _driver
+      @params[:driver] = _driver
     end #set_driver
 
     #goes through our children to see if the call matches a name
     def get_child_name(_name)
       child = nil
-      @children.each do |c|
-        child = c if c.name.downcase == _name.downcase
+      @params[:children].each do |c|
+        child = c if c.params[:name].downcase == _name.downcase
       end #do
       child
     end #get_child_name
 
     #goes through the selectors and generates the driver element
     def get_native_element
-      native_element = @driver
+      native_element = @params[:driver]
 
-      unless @selector.empty?
-        @selector.each do |selector|
+      unless @params[:selector].empty?
+        @params[:selector].each do |selector|
           #if locator is nil it's probably a call that doesn't take any other arguments
           if selector.locator.nil?
             native_element = native_element.send selector.type

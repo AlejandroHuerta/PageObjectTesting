@@ -15,7 +15,7 @@ module PageObject
 
     #assigns the value returned into @value using the save method assigned
     def save(_driver, *_args)
-      @value = _driver.send @actions[:save], *_args
+      @value = _driver.send @params[:actions][:save], *_args
     end#save
 
     #returns the value that was stored in save
