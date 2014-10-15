@@ -2,10 +2,17 @@ require_relative '../Support/class_level_inheritable_attributes'
 
 module PageObject
   class ElementObject
-    include ClassLevelInheritableAttributes
 
-    inheritable_attributes :actions_dictionary
-    @actions_dictionary = {}
+    class << self
+      def actions_dictionary
+        @actions_dictionary ||= {}
+      end
+
+      def actions_dictionary=(actions)
+        @actions_dictionary ||= {}
+        @actions_dictionary.merge!(actions) {|_key, _oldval, newval| newval}
+      end
+    end
 
     attr_reader :params
 
@@ -24,7 +31,6 @@ module PageObject
         @params[:actions] = {:see => :see}
       end#else
 
-      @params[:actions].merge!(ElementObject.actions_dictionary){|_key, _oldval, newval| newval}
       @params[:actions].merge!(self.class.actions_dictionary){|_key, _oldval, newval| newval}
     end #initialize
 
