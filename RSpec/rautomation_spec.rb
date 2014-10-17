@@ -35,6 +35,21 @@ describe PageObject::ElementObject do
 
       expect(e.send(:click)).to equal(true)
     end#do
+
+    it '.send(:click) with custom confirmation block' do
+      checker = PageObject::ElementObject.new driver: @driver,
+                                              name: 'name',
+                                              selector: PageObject::Selector.new(type: :button,
+                                                                                 locator: {value: 'Reset'})
+
+      e = PageObject::ClickElement.new driver: @driver,
+                                       name: 'name',
+                                       selector: PageObject::Selector.new(type: :button,
+                                                                          locator: {value: 'Enabled'}),
+                                       block: Proc.new {checker.send(:see)}
+
+      expect(e.send(:click)).to equal(true)
+    end#do
   end#ClickElement
 
   describe PageObject::TextInputElement do

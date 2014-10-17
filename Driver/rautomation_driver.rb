@@ -9,7 +9,7 @@ class RAutomationDriver < AutomationDriver
   def process_result(result)
     result
   end #process_result
-end
+end#RAutomationDriver
 
 module PageObject
   #Action filters for this driver
@@ -17,8 +17,13 @@ module PageObject
 
   require_relative '../Elements/click_element'
   class ClickElement
+    #we define our click method because rautomation uses blocks to determine if a button click
+    #was successful
     def click(driver, *args)
-      driver.send(@params[:actions][:click], *args){true}
-    end
-  end
+      #was a proc given as a :block parameter to this object? if not we create a default
+      #block that always passes
+      block = (@params[:block].nil? ? Proc.new {true} : @params[:block])
+      driver.send(@params[:actions][:click], *args, &block)
+    end#click
+  end#ClickElement
 end #PageObject
