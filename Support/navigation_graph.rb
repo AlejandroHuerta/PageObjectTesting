@@ -1,10 +1,9 @@
-require_relative '../RSpec/test_page'
-require_relative '../RSpec/w3_page'
 require 'graphr'
+require_relative '../PageObject/page'
 
 class NavigationGraph
-  def initialize(_starting_page)
-    @starting_page = _starting_page
+  def initialize(starting_page)
+    @starting_page = starting_page
     @dg = DirectedGraph.new
   end#intialize
 
@@ -18,22 +17,22 @@ class NavigationGraph
     @dg
   end#build
 
-  def traverse(_node)
-    if _node.class <= Page
-      _node.elements.each do |key, element|
-        @dg.add_link _node, element
+  def traverse(node)
+    if node.class <= Page
+      node.elements.each do |_key, element|
+        @dg.add_link node, element
         traverse element
       end#do
     else
-      _node.children.each do |child|
-        @dg.add_link _node, child
+      node.children.each do |child|
+        @dg.add_link node, child
         traverse child
       end#do
-      unless _node.next_page.nil?
-        next_page = get_page _node.next_page
+      unless node.next_page.nil?
+        next_page = get_page node.next_page
         if next_page.nil?
-          next_page = Page.build_page _node.next_page
-          @dg.add_link _node, next_page
+          next_page = Page.build_page node.next_page
+          @dg.add_link node, next_page
           visited_page next_page
           traverse next_page
         end
@@ -47,14 +46,14 @@ class NavigationGraph
     system('C:\Program Files (x86)\Graphviz2.38\bin\dot.exe', '-Tpng', '-ograph.png', '-Gdpi=300', 'dotfile')
   end
 
-  def get_page(_class)
+  def get_page(page_class)
     @pages ||= {}
-    @pages[_class] if @pages.has_key? _class
+    @pages[page_class] if @pages.has_key? page_class
   end
 
-  def visited_page(_page)
+  def visited_page(page)
     @pages ||= {}
-    @pages[_page.class] = _page unless @pages.has_key? _page.class
+    @pages[page.class] = page unless @pages.has_key? page.class
   end
 end#NavigationGrapher
 
