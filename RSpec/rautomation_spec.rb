@@ -20,7 +20,7 @@ describe PageObject::ElementObject do
     e = PageObject::ElementObject.new driver: @driver,
                                       name: 'name',
                                       selector: PageObject::Selector.new(type: :button,
-                                                                         locator: {value: 'Enabled'})
+                                                                         specifier: {value: 'Enabled'})
 
     expect(e.send(:see)).to equal(true)
   end#do
@@ -31,7 +31,7 @@ describe PageObject::ElementObject do
       e = PageObject::ClickElement.new driver: @driver,
                                        name: 'name',
                                        selector: PageObject::Selector.new(type: :button,
-                                                                          locator: {value: 'Enabled'})
+                                                                          specifier: {value: 'Enabled'})
 
       expect(e.send(:click)).to equal(true)
     end#do
@@ -40,12 +40,12 @@ describe PageObject::ElementObject do
       checker = PageObject::ElementObject.new driver: @driver,
                                               name: 'name',
                                               selector: PageObject::Selector.new(type: :button,
-                                                                                 locator: {value: 'Reset'})
+                                                                                 specifier: {value: 'Reset'})
 
       e = PageObject::ClickElement.new driver: @driver,
                                        name: 'name',
                                        selector: PageObject::Selector.new(type: :button,
-                                                                          locator: {value: 'Enabled'}),
+                                                                          specifier: {value: 'Enabled'}),
                                        block: Proc.new {checker.send(:see)}
 
       expect(e.send(:click)).to equal(true)
@@ -58,7 +58,7 @@ describe PageObject::ElementObject do
       e = PageObject::TextInputElement.new driver: @driver,
                                           name: 'name',
                                           selector: PageObject::Selector.new(type: :text_field,
-                                                                             locator: {class: /Edit/i, index: 2})
+                                                                             specifier: {class: /Edit/i, index: 2})
 
       expect(e.send(:set, 'Something')).to equal(true)
     end#do
@@ -67,7 +67,7 @@ describe PageObject::ElementObject do
       e = PageObject::TextInputElement.new driver: @driver,
                                            name: 'name',
                                            selector: PageObject::Selector.new(type: :text_field,
-                                                                              locator: {class: /Edit/i, index: 2})
+                                                                              specifier: {class: /Edit/i, index: 2})
 
       e.send(:set, 'Something')
       expect(e.send(:value)).to eq('Something')

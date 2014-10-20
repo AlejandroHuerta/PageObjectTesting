@@ -104,10 +104,10 @@ module PageObject
       unless @params[:selector].empty?
         @params[:selector].each do |selector|
           #if locator is nil it's probably a call that doesn't take any other arguments
-          if selector.locator.nil?
+          if selector.specifier.nil?
             native_element = native_element.send selector.type
           else
-            native_element = native_element.send selector.type, selector.locator
+            native_element = native_element.send selector.type, selector.specifier
           end#else
         end#do
       end#unless

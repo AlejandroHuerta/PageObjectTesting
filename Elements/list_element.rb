@@ -14,7 +14,7 @@ module PageObject
     def Fixnum(_driver, *_args)
       if _args[0].is_a? Fixnum
         @params[:children].each do |child|
-          child.params[:selector][0].locator[:index] = _args[0]
+          child.params[:selector][0].specifier[:index] = _args[0]
         end #do
       end #if
       self
