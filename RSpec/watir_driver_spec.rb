@@ -99,10 +99,8 @@ describe PageObject::ElementObject do
                                         name: 'name',
                                         selector: [PageObject::Selector.new(type: :element,
                                                                             specifier: {text: 'Deep child in list'}),
-                                                  PageObject::Selector.new(type: :parent,
-                                                                           specifier: nil),
-                                                  PageObject::Selector.new(type: :parent,
-                                                                           specifier: nil)],
+                                                  PageObject::Selector.new(type: :parent),
+                                                  PageObject::Selector.new(type: :parent)],
                                         actions: {text: :text}
 
       expect(e.send(:text)).to include('Element 1')
@@ -185,8 +183,7 @@ describe PageObject::ElementObject do
                                                                            specifier: {id: 'decorator_test_li_2'}),
                                         children: PageObject::ElementObject.new(driver: @driver,
                                                                                 name: 'Highlighted',
-                                                                                selector: [PageObject::Selector.new(type: :parent,
-                                                                                                                    specifier: nil),
+                                                                                selector: [PageObject::Selector.new(type: :parent),
                                                                                            PageObject::Selector.new(type: :li,
                                                                                                          specifier: {css: 'li[style="color:green"]'})])
 
