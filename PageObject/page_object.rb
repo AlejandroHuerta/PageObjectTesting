@@ -33,35 +33,14 @@ module PageObject
   end
 
   class ElementObject
-    def do_work(*_args)
-      #lets get our driver element with our selectors
-      native_element = self.get_native_element
-
-      #do we need to perform any before steps?
-      if @params.has_key? :before
-        return false unless case @params[:before].arity
-                              when 1
-                                @params[:before].call native_element
-                              else
-                                @params[:before].call
-                            end#case
-      end#if
-
-      #do we have a defined method for this call?
-      #otherwise construct the default send
-      if self.respond_to? _args[0]
-        result = self.__send__ _args.shift, native_element, *_args
-      else
-        result = native_element.send @params[:actions][_args.shift.to_sym], *_args
-      end#else
-
+    def process_result(result)
       #if we have a next_page specified we generate it and assign it
       if @params[:next_page].nil?
         result
       else
         Page.page = Page.build_page(@params[:next_page])
       end #else
-    end #do_work
+    end
   end#ElementObject
 
   protected

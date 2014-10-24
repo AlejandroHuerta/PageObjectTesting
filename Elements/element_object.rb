@@ -87,10 +87,12 @@ module PageObject
       #do we have a defined method for this call?
       #otherwise construct the default send
       if self.respond_to? args[0]
-        self.__send__ args.shift, native_element, *args
+        result = self.__send__ args.shift, native_element, *args
       else
-        native_element.send @params[:actions][args.shift.to_sym], *args
+        result = native_element.send @params[:actions][args.shift.to_sym], *args
       end#else
+
+      self.process_result result
     end #do_work
 
     protected
@@ -123,6 +125,12 @@ module PageObject
       end#unless
       native_element
     end#get_native_element
+
+    #takes the result and can do extra work to it
+    #helpful for monkey patching
+    def process_result(result)
+      result
+    end#process_result
   end #class element_object
 
   #helper method for creating an element
