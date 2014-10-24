@@ -1,10 +1,10 @@
-require_relative '../Elements/element_object'
-require_relative '../Elements/click_element'
-require_relative '../Elements/text_input_element'
-require_relative '../Elements/list_element'
-require_relative '../Elements/selector'
-require_relative '../Elements/checkbox_element'
-require_relative '../Elements/save_element'
+require_relative '../elements/element_object'
+require_relative '../elements/click_element'
+require_relative '../elements/text_input_element'
+require_relative '../elements/list_element'
+require_relative '../elements/selector'
+require_relative '../elements/checkbox_element'
+require_relative '../elements/save_element'
 
 module PageObject
 

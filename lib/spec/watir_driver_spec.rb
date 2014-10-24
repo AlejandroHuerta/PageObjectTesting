@@ -1,9 +1,9 @@
 require 'rspec'
-require_relative '../PageObject/page_object'
-require_relative '../Driver/watir_driver'
+require_relative '../../lib/page_object/page_object'
+require_relative '../../lib/driver/watir_driver'
 
 context 'Page testing' do
-  require_relative '../PageObject/page'
+  require_relative '../../lib/page_object/page'
 
   class Page1 < Page
     def initialize(_driver)
@@ -39,7 +39,7 @@ context 'Page testing' do
     end
 
     it 'changes pages' do
-      @browser.send :goto, "file://#{Dir.pwd}\\page_object_page_1.html"
+      @browser.send :goto, "file://#{Dir.pwd}\\spec\\page_object_page_1.html"
 
       Page.page.send('Page2').send(:click)
       expect(Page.page).to be_instance_of(Page2)
@@ -60,7 +60,7 @@ describe PageObject::ElementObject do
   end
 
   before(:each) do
-    @driver.send :goto, "file://#{Dir.pwd}\\page_object_page_1.html"
+    @driver.send :goto, "file://#{Dir.pwd}\\spec\\page_object_page_1.html"
   end#do
 
   it '.send(:see)' do
