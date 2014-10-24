@@ -1,9 +1,9 @@
 require 'rspec'
-require_relative '../../lib/page_object/page_object'
-require_relative '../../lib/driver/watir_driver'
+require_relative '../lib/page_object/page_object'
+require_relative '../lib/driver/watir_driver'
 
 context 'Page testing' do
-  require_relative '../../lib/page_object/page'
+  require_relative '../lib/page_object/page'
 
   class Page1 < Page
     def initialize(_driver)
