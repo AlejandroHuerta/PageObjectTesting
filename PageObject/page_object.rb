@@ -37,6 +37,16 @@ module PageObject
       #lets get our driver element with our selectors
       native_element = self.get_native_element
 
+      #do we need to perform any before steps?
+      if @params.has_key? :before
+        return false unless case @params[:before].arity
+                              when 1
+                                @params[:before].call native_element
+                              else
+                                @params[:before].call
+                            end#case
+      end#if
+
       #do we have a defined method for this call?
       #otherwise construct the default send
       if self.respond_to? _args[0]
