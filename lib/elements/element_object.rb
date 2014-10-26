@@ -16,8 +16,6 @@ class ElementObject
   def initialize(hash)
     #we keep the hash passed in to allow for easier extendability
     @params = hash
-    raise ArgumentError.new 'No driver passed' unless @params.has_key? :driver
-    raise ArgumentError.new 'No name given' unless @params.has_key? :name
     @params[:selector] = @params.has_key?(:selector) ? [*@params[:selector]] : []
     @params[:children] = @params.has_key?(:children) ? [*@params[:children]] : []
 
