@@ -23,7 +23,7 @@ class ElementObject
 
     #merging actions together
     if @params.has_key? :actions
-      @params[:actions] = @params[:actions].merge({:see => :see}){|_key, oldval, _newval| oldval}
+      @params[:actions].merge!({:see => :see}){|_key, oldval, _newval| oldval}
     else
       @params[:actions] = {:see => :see}
     end#else
