@@ -1,6 +1,5 @@
 require_relative 'automation_driver'
 require 'watir'
-require_relative '../../lib/page_object/page_object'
 
 class WatirDriver < AutomationDriver
   def initialize(_driver = nil)
@@ -28,9 +27,11 @@ class WatirDriver < AutomationDriver
   end#see_text_as
 end# WatirDriver
 
-module PageObject
-  #Action filters for this driver
-  ElementObject.actions_dictionary = {see: :present?}
-  TextInputElement.actions_dictionary = {enter: :value, text: :value}
-  CheckboxElement.actions_dictionary = {check: :set, uncheck: :clear, checked?: :set?}
-end #page_object
+require_relative '../../lib/elements/element_object'
+require_relative '../../lib/elements/text_input_element'
+require_relative '../../lib/elements/checkbox_element'
+
+#Action filters for this driver
+ElementObject.actions_dictionary = {see: :present?}
+TextInputElement.actions_dictionary = {enter: :value, text: :value}
+CheckboxElement.actions_dictionary = {check: :set, uncheck: :clear, checked?: :set?}
