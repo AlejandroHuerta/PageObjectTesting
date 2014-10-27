@@ -17,7 +17,16 @@ class ElementObject
     #we keep the hash passed in to allow for easier extendability
     @params = hash
     @params[:selector] = @params.has_key?(:selector) ? [*@params[:selector]] : []
-    @params[:children] = @params.has_key?(:children) ? [*@params[:children]] : []
+
+    if @params.has_key? :children
+      children = [*@params[:children]]
+      @params[:children] = {}
+      children.each do |child|
+        @params[:children][child.params[:name]] = child
+      end#each
+    else
+      @params[:children] = {}
+    end#else
 
     #merging actions together
     if @params.has_key? :actions
@@ -40,11 +49,11 @@ class ElementObject
       self.do_work *args
     #we don't respond to this action or it's a child's name
     elsif @params[:children].length > 0
-      found_child = get_child_name args[0]
+      found_child = @params[:children][args[0]]
       #Did we find the child? if not it's probably an action for one of them
       if found_child.nil?
         #go through all the children until we find one that responds to the action
-        @params[:children].each do |child|
+        @params[:children].each do |_key, child|
           next unless child.params[:actions].has_key? args[0]
           child.set_driver self.get_native_element
           return child.send *args
@@ -94,15 +103,6 @@ class ElementObject
   def set_driver(driver)
     @params[:driver] = driver
   end #set_driver
-
-  #goes through our children to see if the call matches a name
-  def get_child_name(name)
-    child = nil
-    @params[:children].each do |c|
-      child = c if c.params[:name].downcase == name.downcase
-    end #do
-    child
-  end #get_child_name
 
   #goes through the selectors and generates the driver element
   def get_native_element
