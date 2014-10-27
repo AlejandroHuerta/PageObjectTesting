@@ -6,13 +6,13 @@ module PageObject
       attr_reader :page, :element
       def define(&block)
         @page = Page.new @driver
-        block.call if block_given?
+        instance_eval &block if block_given?
         @page
       end
 
       def element(name, &block)
         @element = ElementObject.new name: name
-        block.call if block_given?
+        instance_eval &block if block_given?
         @page.elements[name] = @element
       end
 

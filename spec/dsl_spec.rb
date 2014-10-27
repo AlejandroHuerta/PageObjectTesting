@@ -14,7 +14,7 @@ end
 context 'Element' do
   it 'creates an element' do
     test_page = PageBuilder.define do
-      PageBuilder.element 'Element'
+      element 'Element'
     end
 
     expect(test_page.send('Element')).to be_instance_of(ElementObject)
@@ -22,8 +22,8 @@ context 'Element' do
 
   it 'element with selector' do
     test_page = PageBuilder.define do
-      PageBuilder.element 'Element' do
-        PageBuilder.selector type: :button, specifier: {id: 'form2button'}
+      element 'Element' do
+        selector type: :button, specifier: {id: 'form2button'}
       end
     end
 
@@ -34,8 +34,8 @@ context 'Element' do
 
   it 'element with actions' do
     test_page = PageBuilder.define do
-      PageBuilder.element 'Element' do
-        PageBuilder.actions text: :text, see: :with_my_eyes
+      element 'Element' do
+        actions text: :text, see: :with_my_eyes
       end
     end
 
@@ -45,8 +45,8 @@ context 'Element' do
 
   it 'element with child' do
     test_page = PageBuilder.define do
-      PageBuilder.element 'Element' do
-        PageBuilder.element 'Child'
+      element 'Element' do
+        element 'Child'
       end
     end
 
