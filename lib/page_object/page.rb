@@ -12,16 +12,16 @@ class Page
   end
 
   attr_accessor :driver
-  attr_reader :elements
+  attr_reader :children
 
   def initialize(_driver)
     @driver = _driver
-    @elements = {}
+    @children = {}
   end #initialize
 
   def send(*_args)
-    if @elements.has_key? _args[0]
-      @elements[_args[0]]
+    if @children.has_key? _args[0]
+      @children[_args[0]]
     else
       super
     end #else

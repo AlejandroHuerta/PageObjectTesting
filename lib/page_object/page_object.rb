@@ -35,7 +35,7 @@ module PageObject
   protected
   def create_element_object(_element, _hash)
     raise ArgumentError, 'Argument not a hash' unless _hash.instance_of? Hash
-    @elements[_hash[:name]] = self.send(_element, _hash)
+    @children[_hash[:name]] = self.send(_element, _hash)
   end
 end #module page_object
 

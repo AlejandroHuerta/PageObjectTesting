@@ -13,7 +13,7 @@ module PageObject
       def element(name, &block)
         @element = ElementObject.new name: name
         instance_eval &block if block_given?
-        @page.elements[name] = @element
+        @page.children[name] = @element
       end
 
       def selector(hash)
