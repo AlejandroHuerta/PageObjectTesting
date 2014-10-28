@@ -50,6 +50,15 @@ module PageObject
         create_element TextInputElement, name, &block
       end#text_input
 
+      def next_page(name)
+        @stack.last[:next_page] = name
+      end#next_page
+
+      def check(hash)
+        method_value = hash.shift
+        @stack.last[:before] = proc {|driver| driver.send(method_value[0]).match method_value[1]}
+      end
+
       private
       def create_element(klass, name, &block)
         #add our hash that will be possibly filled with values by further calls
