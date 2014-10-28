@@ -6,10 +6,14 @@ module PageObject
       attr_reader :stack
 
       def define(&block)
-        @stack ||= []
-        @stack.push Page.new
+        #reset the stack
+        @stack = []
+        #place our hash
+        @stack.push Hash.new
+        #run the block given
         instance_eval &block if block_given?
-        @stack.pop
+        #take the top element and pass as the page's hash
+        Page.new @stack.pop
       end#define
 
       def element(name, &block)
@@ -17,11 +21,13 @@ module PageObject
       end#element
 
       def selector(hash)
-        @stack.last.params[:selector].push Selector.new hash
+        @stack.last[:selector] ||= []
+        @stack.last[:selector].push Selector.new hash
       end#selector
 
       def actions(hash)
-        @stack.last.params[:actions].merge!(hash) {|_key, _oldval, newval| newval}
+        @stack.last[:actions] ||= {}
+        @stack.last[:actions].merge!(hash) {|_key, _oldval, newval| newval}
       end#actions
 
       def click(name, &block)
@@ -46,10 +52,24 @@ module PageObject
 
       private
       def create_element(klass, name, &block)
-        @stack.push Object::const_get(klass.name).new name: name
+        #add our hash that will be possibly filled with values by further calls
+        @stack.push name: name
+        #run our block if given
         instance_eval &block if block_given?
-        this = @stack.pop
-        @stack.last.params[:children][name] = this
+
+        #elements expect an array not hash
+        hash = @stack.pop
+        hash[:children] ||= {}
+        children = hash[:children]
+        hash[:children] = []
+        children.each do |_key, child|
+          hash[:children].push child
+        end#each
+
+        #create the element and add it to the stacks top element's children array
+        this = Object::const_get(klass.name).new hash
+        @stack.last[:children] ||= {}
+        @stack.last[:children][name] = this
       end#create_element
     end#class << self
   end#PageBuilder
