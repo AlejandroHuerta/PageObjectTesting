@@ -14,7 +14,7 @@ end#context Page
 context 'ElementObject' do
   it 'creates an element' do
     page = PageBuilder.define do
-      element 'Element'
+      object 'Element'
     end#define
 
     expect(page.send('Element')).to be_instance_of(ElementObject)
@@ -22,7 +22,7 @@ context 'ElementObject' do
 
   it 'element with selector' do
     page = PageBuilder.define do
-      element 'Element' do
+      object 'Element' do
         selector type: :button, specifier: {id: 'form2button'}
       end#element
     end#define
@@ -34,7 +34,7 @@ context 'ElementObject' do
 
   it 'element with actions' do
     page = PageBuilder.define do
-      element 'Element' do
+      object 'Element' do
         actions text: :text, see: :with_my_eyes
       end#element
     end#define
@@ -45,8 +45,8 @@ context 'ElementObject' do
 
   it 'element with child' do
     page = PageBuilder.define do
-      element 'Element' do
-        element 'Child'
+      object 'Element' do
+        object 'Child'
       end#element
     end#define
 
@@ -86,8 +86,8 @@ context 'ListElement' do
   it 'list with multiple children' do
     page = PageBuilder.define do
       list 'ListElement' do
-        element 'Element1'
-        element 'Element2'
+        object 'Element1'
+        object 'Element2'
       end#list
     end#define
 
@@ -109,7 +109,7 @@ end#context SaveElement
 context 'TextInputElement' do
   it 'creates a text input element' do
     page = PageBuilder.define do
-      text_input 'TextInputElement'
+      text 'TextInputElement'
     end#define
 
     expect(page.send('TextInputElement')).to be_instance_of(TextInputElement)
@@ -118,10 +118,10 @@ end#context TextInputElement
 
 context 'full example' do
   page = PageBuilder.define do
-    text_input 'Email1' do
+    text 'Email1' do
       selector type: :text_field, specifier: {id: 'email'}
     end
-    text_input 'Email2' do
+    text 'Email2' do
       selector type: :text_field, specifier: {id: 'email2'}
     end
     click 'Submit3' do
@@ -135,9 +135,9 @@ context 'full example' do
         selector type: :checkbox
       end
     end
-    element 'List item' do
+    object 'List item' do
       selector type: :ul, specifier: {id: 'decorator_test'}
-      element 'Highlighted' do
+      object 'Highlighted' do
         selector type: :li, specifier: {id: 'decorator_test_li_2'}
         check style: /green/
       end

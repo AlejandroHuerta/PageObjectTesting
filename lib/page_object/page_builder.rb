@@ -16,7 +16,7 @@ module PageObject
         Page.new @stack.pop
       end#define
 
-      def element(name, &block)
+      def object(name, &block)
         create_element ElementObject, name, &block
       end#element
 
@@ -46,7 +46,7 @@ module PageObject
         create_element SaveElement, name, &block
       end#save
 
-      def text_input(name, &block)
+      def text(name, &block)
         create_element TextInputElement, name, &block
       end#text_input
 
