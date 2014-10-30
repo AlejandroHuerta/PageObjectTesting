@@ -6,7 +6,7 @@ class Page1 < Page
     super
 
     create_click_object name: 'Page2',
-                        selector: selector(type: :link,
+                        selector: selector_object(type: :link,
                                            specifier: {text: 'Submit2'}),
                         next_page: Page2
   end#initialize
@@ -32,7 +32,7 @@ describe Page do
   end#after all
 
   it '.send(NAME)' do
-    expect(Page.page.send('Page2')).to be_instance_of(ClickElement)
+    expect(Page.page.send('Page2')).to be_instance_of(Elements::ClickElement)
   end#it
 
   it 'changes pages' do

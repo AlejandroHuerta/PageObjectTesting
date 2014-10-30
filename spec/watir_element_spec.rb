@@ -7,6 +7,8 @@ require_relative '../lib/elements/save_element'
 require_relative '../lib/elements/selector'
 require_relative '../lib/elements/text_input_element'
 
+include Elements
+
 describe ElementObject do
 
   before(:all) do

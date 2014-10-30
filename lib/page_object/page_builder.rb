@@ -3,7 +3,7 @@ require_relative 'page'
 module PageObject
   module PageBuilder
     class << self
-      attr_reader :stack
+      attr_reader :stack, :factories
 
       def define(&block)
         #reset the stack
@@ -16,14 +16,9 @@ module PageObject
         Page.new @stack.pop
       end#define
 
-      def object(name, &block)
-        create_element ElementObject, name, &block
+      def element(name, &block)
+        create_element Elements::ElementObject, name, &block
       end#element
-
-      def selector(hash)
-        @stack.last[:selector] ||= []
-        @stack.last[:selector].push Selector.new hash
-      end#selector
 
       def actions(hash)
         @stack.last[:actions] ||= {}
@@ -31,23 +26,23 @@ module PageObject
       end#actions
 
       def click(name, &block)
-        create_element ClickElement, name, &block
+        create_element Elements::ClickElement, name, &block
       end#click
 
       def checkbox(name, &block)
-        create_element CheckboxElement, name, &block
+        create_element Elements::CheckboxElement, name, &block
       end#checkbox
 
       def list(name, &block)
-        create_element ListElement, name, &block
+        create_element Elements::ListElement, name, &block
       end#list
 
       def save(name, &block)
-        create_element SaveElement, name, &block
+        create_element Elements::SaveElement, name, &block
       end#save
 
       def text(name, &block)
-        create_element TextInputElement, name, &block
+        create_element Elements::TextInputElement, name, &block
       end#text_input
 
       def next_page(name)
@@ -59,6 +54,19 @@ module PageObject
         @stack.last[:before] = proc {|driver| driver.send(method_value[0]).match method_value[1]}
       end
 
+      def add_factory(method, klass)
+        @factories ||= {}
+        @factories[method] = klass
+      end#add_factory
+
+      def method_missing(method, *args)
+        if @factories.include? method
+          @factories[method].define *args
+        else
+          super
+        end#else
+      end#method_missing
+
       private
       def create_element(klass, name, &block)
         #add our hash that will be possibly filled with values by further calls
@@ -68,12 +76,7 @@ module PageObject
 
         #elements expect an array not hash
         hash = @stack.pop
-        hash[:children] ||= {}
-        children = hash[:children]
-        hash[:children] = []
-        children.each do |_key, child|
-          hash[:children].push child
-        end#each
+        hash[:children] = hash[:children].nil? ? {} : hash[:children].values
 
         #create the element and add it to the stacks top element's children array
         this = Object::const_get(klass.name).new hash
@@ -81,5 +84,22 @@ module PageObject
         @stack.last[:children][name] = this
       end#create_element
     end#class << self
+
+    class Selector
+      class << self
+        def define(*args, &block)
+          #run the block given
+          if block_given?
+            instance_eval &block
+          else
+            PageBuilder.stack.last[:selector] ||= []
+            PageBuilder.stack.last[:selector].push Elements::Selector.new *args
+          end#else
+        end#define
+      end#class << self
+    end#Selector
+
+    PageBuilder.add_factory :selector, Selector
+
   end#PageBuilder
 end#PageObject

@@ -39,13 +39,15 @@ module PageObject
   end
 end #module page_object
 
-class ElementObject
-  def process_result(result)
-    #if we have a next_page specified we generate it and assign it
-    if @params[:next_page].nil?
-      result
-    else
-      Page.page = Page.build_page(@params[:next_page])
-    end #else
-  end#process_result
-end#ElementObject
+module Elements
+  class ElementObject
+    def process_result(result)
+      #if we have a next_page specified we generate it and assign it
+      if @params[:next_page].nil?
+        result
+      else
+        Page.page = Page.build_page(@params[:next_page])
+      end #else
+    end#process_result
+  end#ElementObject
+end#Elements
