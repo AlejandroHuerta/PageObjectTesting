@@ -8,8 +8,6 @@ class Page1 < Page
   end
 end
 
-include Elements
-
 describe ElementObject do
 
   before(:all) do

@@ -14,15 +14,15 @@ end#context Page
 context 'ElementObject' do
   it 'creates an element' do
     page = PageBuilder.define do
-      element 'Element'
+      object 'Element'
     end#define
 
-    expect(page.send('Element')).to be_instance_of(Elements::ElementObject)
+    expect(page.send('Element')).to be_instance_of(ElementObject)
   end#it
 
   it 'element with selector' do
     page = PageBuilder.define do
-      element 'Element' do
+      object 'Element' do
         selector type: :button, specifier: {id: 'form2button'}
       end#element
     end#define
@@ -34,7 +34,7 @@ context 'ElementObject' do
 
   it 'element with actions' do
     page = PageBuilder.define do
-      element 'Element' do
+      object 'Element' do
         actions text: :text, see: :with_my_eyes
       end#element
     end#define
@@ -45,12 +45,12 @@ context 'ElementObject' do
 
   it 'element with child' do
     page = PageBuilder.define do
-      element 'Element' do
-        element 'Child'
+      object 'Element' do
+        object 'Child'
       end#element
     end#define
 
-    expect(page.send('Element').send('Child')).to be_instance_of(Elements::ElementObject)
+    expect(page.send('Element').send('Child')).to be_instance_of(ElementObject)
   end#it
 end#context Element
 
@@ -60,7 +60,7 @@ context 'ClickElement' do
       click 'ClickElement'
     end#define
 
-    expect(page.send('ClickElement')).to be_instance_of(Elements::ClickElement)
+    expect(page.send('ClickElement')).to be_instance_of(ClickElement)
   end#it
 end#context ClickElement
 
@@ -70,7 +70,7 @@ context 'CheckboxElement' do
       checkbox 'CheckboxElement'
     end#define
 
-    expect(page.send('CheckboxElement')).to be_instance_of(Elements::CheckboxElement)
+    expect(page.send('CheckboxElement')).to be_instance_of(CheckboxElement)
   end#it
 end#context CheckboxElement
 
@@ -80,19 +80,19 @@ context 'ListElement' do
       list 'ListElement'
     end#define
 
-    expect(page.send('ListElement')).to be_instance_of(Elements::ListElement)
+    expect(page.send('ListElement')).to be_instance_of(ListElement)
   end#it
 
   it 'list with multiple children' do
     page = PageBuilder.define do
       list 'ListElement' do
-        element 'Element1'
-        element 'Element2'
+        object 'Element1'
+        object 'Element2'
       end#list
     end#define
 
-    expect(page.send('ListElement').send('Element1')).to be_instance_of(Elements::ElementObject)
-    expect(page.send('ListElement').send('Element2')).to be_instance_of(Elements::ElementObject)
+    expect(page.send('ListElement').send('Element1')).to be_instance_of(ElementObject)
+    expect(page.send('ListElement').send('Element2')).to be_instance_of(ElementObject)
   end#it
 end#context ListElement
 
@@ -102,7 +102,7 @@ context 'SaveElement' do
       save 'SaveElement'
     end#define
 
-    expect(page.send('SaveElement')).to be_instance_of(Elements::SaveElement)
+    expect(page.send('SaveElement')).to be_instance_of(SaveElement)
   end#it
 end#context SaveElement
 
@@ -112,7 +112,7 @@ context 'TextInputElement' do
       text 'TextInputElement'
     end#define
 
-    expect(page.send('TextInputElement')).to be_instance_of(Elements::TextInputElement)
+    expect(page.send('TextInputElement')).to be_instance_of(TextInputElement)
   end#it
 end#context TextInputElement
 
@@ -135,9 +135,9 @@ context 'full example' do
         selector type: :checkbox
       end
     end
-    element 'List item' do
+    object 'List item' do
       selector type: :ul, specifier: {id: 'decorator_test'}
-      element 'Highlighted' do
+      object 'Highlighted' do
         selector type: :li, specifier: {id: 'decorator_test_li_2'}
         check style: /green/
       end

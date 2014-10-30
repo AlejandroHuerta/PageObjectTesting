@@ -32,6 +32,6 @@ require_relative '../../lib/elements/text_input_element'
 require_relative '../../lib/elements/checkbox_element'
 
 #Action filters for this driver
-Elements::ElementObject.actions_dictionary = {see: :present?}
-Elements::TextInputElement.actions_dictionary = {enter: :value, text: :value}
-Elements::CheckboxElement.actions_dictionary = {check: :set, uncheck: :clear, checked?: :set?}
+ElementObject.actions_dictionary = {see: :present?}
+TextInputElement.actions_dictionary = {enter: :value, text: :value}
+CheckboxElement.actions_dictionary = {check: :set, uncheck: :clear, checked?: :set?}
