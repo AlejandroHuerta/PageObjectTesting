@@ -1,106 +1,107 @@
+require 'singleton'
 require_relative '../page'
 
 module PageObject
-  module PageBuilder
-    class << self
-      attr_reader :stack, :factories
+  class PageBuilder
+    include Singleton
 
-      def define(&block)
-        #reset the stack
-        @stack = []
-        #place our hash
-        @stack.push Hash.new
-        #run the block given
-        instance_eval &block if block_given?
-        #take the top element and pass as the page's hash
-        Page.new @stack.pop
-      end#define
+    attr_reader :stack, :factories
 
-      def element(name, &block)
-        create_element Elements::ElementObject, name, &block
-      end#element
+    def define(&block)
+      #reset the stack
+      @stack = []
+      #place our hash
+      @stack.push Hash.new
+      #run the block given
+      instance_eval &block if block_given?
+      #take the top element and pass as the page's hash
+      Page.new @stack.pop
+    end#define
 
-      def actions(hash)
-        @stack.last[:actions] ||= {}
-        @stack.last[:actions].merge!(hash) {|_key, _oldval, newval| newval}
-      end#actions
+    def element(name, &block)
+      create_element Elements::ElementObject, name, &block
+    end#element
 
-      def click(name, &block)
-        create_element Elements::ClickElement, name, &block
-      end#click
+    def actions(hash)
+      @stack.last[:actions] ||= {}
+      @stack.last[:actions].merge!(hash) {|_key, _oldval, newval| newval}
+    end#actions
 
-      def checkbox(name, &block)
-        create_element Elements::CheckboxElement, name, &block
-      end#checkbox
+    def click(name, &block)
+      create_element Elements::ClickElement, name, &block
+    end#click
 
-      def list(name, &block)
-        create_element Elements::ListElement, name, &block
-      end#list
+    def checkbox(name, &block)
+      create_element Elements::CheckboxElement, name, &block
+    end#checkbox
 
-      def save(name, &block)
-        create_element Elements::SaveElement, name, &block
-      end#save
+    def list(name, &block)
+      create_element Elements::ListElement, name, &block
+    end#list
 
-      def text(name, &block)
-        create_element Elements::TextInputElement, name, &block
-      end#text_input
+    def save(name, &block)
+      create_element Elements::SaveElement, name, &block
+    end#save
 
-      def next_page(name)
-        @stack.last[:next_page] = name
-      end#next_page
+    def text(name, &block)
+      create_element Elements::TextInputElement, name, &block
+    end#text_input
 
-      def check(hash)
-        method_value = hash.shift
-        @stack.last[:before] = proc {|driver| driver.send(method_value[0]).match method_value[1]}
-      end
+    def next_page(name)
+      @stack.last[:next_page] = name
+    end#next_page
 
-      def add_factory(method, klass)
-        @factories ||= {}
-        @factories[method] = klass
-      end#add_factory
+    def check(hash)
+      method_value = hash.shift
+      @stack.last[:before] = proc {|driver| driver.send(method_value[0]).match method_value[1]}
+    end
 
-      def method_missing(method, *args)
-        if @factories.include? method
-          @factories[method].define *args
-        else
-          super
-        end#else
-      end#method_missing
+    def add_factory(method, klass)
+      @factories ||= {}
+      @factories[method] = klass
+    end#add_factory
 
-      private
-      def create_element(klass, name, &block)
-        #add our hash that will be possibly filled with values by further calls
-        @stack.push name: name
-        #run our block if given
-        instance_eval &block if block_given?
+    def method_missing(method, *args)
+      if @factories.include? method
+        @factories[method].define *args
+      else
+        super
+      end#else
+    end#method_missing
 
-        #elements expect an array not hash
-        hash = @stack.pop
-        hash[:children] = hash[:children].nil? ? {} : hash[:children].values
+    private
+    def create_element(klass, name, &block)
+      #add our hash that will be possibly filled with values by further calls
+      @stack.push name: name
+      #run our block if given
+      instance_eval &block if block_given?
 
-        #create the element and add it to the stacks top element's children array
-        this = Object::const_get(klass.name).new hash
-        @stack.last[:children] ||= {}
-        @stack.last[:children][name] = this
-      end#create_element
-    end#class << self
+      #elements expect an array not hash
+      hash = @stack.pop
+      hash[:children] = hash[:children].nil? ? {} : hash[:children].values
 
-    class Selector
-      class << self
-
-        def define(*args, &block)
-          #run the block given
-          if block_given?
-            instance_eval &block
-          else
-            PageBuilder.stack.last[:selector] ||= []
-            PageBuilder.stack.last[:selector].push Elements::Selector.new *args
-          end#else
-        end#define
-      end#class << self
-    end#Selector
-
-    PageBuilder.add_factory :selector, Selector
-
+      #create the element and add it to the stacks top element's children array
+      this = Object::const_get(klass.name).new hash
+      @stack.last[:children] ||= {}
+      @stack.last[:children][name] = this
+    end#create_element
   end#PageBuilder
+
+  class Selector
+    class << self
+
+      def define(*args, &block)
+        #run the block given
+        if block_given?
+          instance_eval &block
+        else
+          PageBuilder.instance.stack.last[:selector] ||= []
+          PageBuilder.instance.stack.last[:selector].push Elements::Selector.new *args
+        end#else
+      end#define
+    end#class << self
+  end#Selector
+
+  PageBuilder.instance.add_factory :selector, Selector
+
 end#PageObject
