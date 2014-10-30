@@ -1,5 +1,5 @@
 require_relative '../lib/page_object/page'
-require_relative '../lib/page_object/page_builder'
+require_relative '../lib/page_object/page_builder/page_builder'
 
 include PageObject
 

@@ -1,4 +1,4 @@
-require_relative 'page'
+require_relative '../page'
 
 module PageObject
   module PageBuilder
@@ -84,5 +84,23 @@ module PageObject
         @stack.last[:children][name] = this
       end#create_element
     end#class << self
+
+    class Selector
+      class << self
+
+        def define(*args, &block)
+          #run the block given
+          if block_given?
+            instance_eval &block
+          else
+            PageBuilder.stack.last[:selector] ||= []
+            PageBuilder.stack.last[:selector].push Elements::Selector.new *args
+          end#else
+        end#define
+      end#class << self
+    end#Selector
+
+    PageBuilder.add_factory :selector, Selector
+
   end#PageBuilder
 end#PageObject
