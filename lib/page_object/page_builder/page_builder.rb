@@ -63,7 +63,7 @@ module PageObject
 
     def method_missing(method, *args)
       if @factories.include? method
-        @factories[method].instance.define *args
+        @factories[method].define *args
       else
         super
       end#else
@@ -88,17 +88,18 @@ module PageObject
   end#PageBuilder
 
   class Selector
-    include Singleton
+    class << self
 
-    def define(*args, &block)
-      #run the block given
-      if block_given?
-        instance_eval &block
-      else
-        PageBuilder.instance.stack.last[:selector] ||= []
-        PageBuilder.instance.stack.last[:selector].push Elements::Selector.new *args
-      end#else
-    end#define
+      def define(*args, &block)
+        #run the block given
+        if block_given?
+          instance_eval &block
+        else
+          PageBuilder.instance.stack.last[:selector] ||= []
+          PageBuilder.instance.stack.last[:selector].push Elements::Selector.new *args
+        end#else
+      end#define
+    end#class << self
   end#Selector
 
   PageBuilder.instance.add_factory :selector, Selector
