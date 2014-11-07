@@ -28,6 +28,7 @@ class ElementObject
       @params[:actions] = {:see => :see}
     end#else
 
+    @params[:actions].merge!(self.get_actions){|_key, oldval, _newval| oldval}
     @params[:actions].merge!(self.class.actions_dictionary){|_key, _oldval, newval| newval}
   end #initialize
 
@@ -128,6 +129,10 @@ class ElementObject
   def process_result(result)
     result
   end#process_result
+
+  def get_actions
+    {}
+  end
 end #class element_object
 
 module PageObject

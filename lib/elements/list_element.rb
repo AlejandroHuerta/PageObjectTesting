@@ -1,14 +1,9 @@
 require_relative 'element_object'
 
 class ListElement < ElementObject
-  def initialize(hash)
-    if hash[:actions].nil?
-      hash[:actions] = {Fixnum => Fixnum}
-    else
-      hash[:actions].merge!({Fixnum => Fixnum}){|_key, oldval, _newval| oldval}
-    end#else
-    super
-  end #initialize
+  def get_actions
+    {Fixnum => Fixnum}
+  end
 
   def Fixnum(_driver, *args)
     if args[0].is_a? Fixnum

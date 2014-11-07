@@ -1,14 +1,9 @@
 require_relative 'element_object'
 
 class ClickElement < ElementObject
-  def initialize(hash)
-    if hash[:actions].nil?
-      hash[:actions] = {:click => :click}
-    else
-      hash[:actions].merge!({:click => :click}){|_key, oldval, _newval| oldval}
-    end
-    super
-  end #initialize
+  def get_actions
+    {:click => :click}
+  end
 end #click_object
 
 module PageObject

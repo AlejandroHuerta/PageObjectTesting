@@ -1,14 +1,9 @@
 require_relative 'element_object'
 
 class CheckboxElement < ElementObject
-  def initialize(hash)
-    if hash[:actions].nil?
-      hash[:actions] = {:check => :check, :set => :set, :clear => :clear, :checked? => :checked?, :set? => :set?}
-    else
-      hash[:actions].merge!({:check => :check, :set => :set, :clear => :clear, :checked? => :checked?, :set? => :set?}){|_key, oldval, _newval| oldval}
-    end
-    super
-  end#initialize
+  def get_actions
+    {:check => :check, :set => :set, :clear => :clear, :checked? => :checked?, :set? => :set?}
+  end
 end#CheckboxObject
 
 module PageObject

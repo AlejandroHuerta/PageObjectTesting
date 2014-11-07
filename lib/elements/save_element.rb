@@ -1,16 +1,9 @@
 require_relative 'element_object'
 
 class SaveElement < ElementObject
-  def initialize(hash)
-    #were any override actions passed in?
-    if hash[:actions].nil?
-      hash[:actions] = {:save => :save, :value => :value}
-    #overrides or additions passed in, let's merge them
-    else
-      hash[:actions].merge!({:save => :save, :value => :value}){|_key, oldval, _newval| oldval}
-    end#else
-    super
-  end #initialize
+  def get_actions
+    {:save => :save, :value => :value}
+  end
 
   #assigns the value returned into @value using the save method assigned
   def save(driver, *args)
