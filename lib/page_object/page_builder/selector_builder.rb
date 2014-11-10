@@ -11,6 +11,10 @@ module PageObject
           PageBuilder.stack.last[:selector].push Selector.new hash
         end#selector
       end#class << self
+
+      def method_missing(method, *args, &block)
+        PageBuilder.send method, *args, &block
+      end
     end#SelectorBuilder
 
     PageBuilder.factories[:selector] = SelectorBuilder

@@ -6,12 +6,12 @@ module PageObject
       class << self
         attr_reader :stack, :factories
 
-        def page(&block)
+        def page(name, *_args, &block)
           @factories ||= {}
           #reset the stack
           @stack = []
           #place our hash
-          @stack.push Hash.new
+          @stack.push name: name
           #run the block given
           instance_eval &block if block_given?
           #take the top element and pass as the page's hash
