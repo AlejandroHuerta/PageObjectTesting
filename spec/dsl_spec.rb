@@ -12,7 +12,7 @@ include PageObject::PageBuilder
 
 context 'Page' do
   it 'creates a new page' do
-    page = PageBuilder.page
+    page = PageBuilder.page ''
 
     expect(page).to be_instance_of(Page)
   end#it
@@ -20,7 +20,7 @@ end#context Page
 
 context 'ElementObject' do
   it 'creates an element' do
-    page = PageBuilder.page do
+    page = PageBuilder.page '' do
       element 'Element'
     end#define
 
@@ -28,7 +28,7 @@ context 'ElementObject' do
   end#it
 
   it 'element with selector' do
-    page = PageBuilder.page do
+    page = PageBuilder.page '' do
       element 'Element' do
         selector type: :button, specifier: {id: 'form2button'}
       end#element
@@ -40,7 +40,7 @@ context 'ElementObject' do
   end#it
 
   it 'element with actions' do
-    page = PageBuilder.page do
+    page = PageBuilder.page '' do
       element 'Element' do
         actions text: :text, see: :with_my_eyes
       end#element
@@ -51,7 +51,7 @@ context 'ElementObject' do
   end#it
 
   it 'element with child' do
-    page = PageBuilder.page do
+    page = PageBuilder.page '' do
       element 'Element' do
         element 'Child'
       end#element
@@ -63,7 +63,7 @@ end#context Element
 
 context 'ClickElement' do
   it 'creates a click element' do
-    page = PageBuilder.page do
+    page = PageBuilder.page '' do
       click 'ClickElement'
     end#define
 
@@ -73,7 +73,7 @@ end#context ClickElement
 
 context 'CheckboxElement' do
   it 'creates a checkbox element' do
-    page = PageBuilder.page do
+    page = PageBuilder.page '' do
       checkbox 'CheckboxElement'
     end#define
 
@@ -83,7 +83,7 @@ end#context CheckboxElement
 
 context 'ListElement' do
   it 'creates a list element' do
-    page = PageBuilder.page do
+    page = PageBuilder.page '' do
       list 'ListElement'
     end#define
 
@@ -91,7 +91,7 @@ context 'ListElement' do
   end#it
 
   it 'list with multiple children' do
-    page = PageBuilder.page do
+    page = PageBuilder.page '' do
       list 'ListElement' do
         element 'Element1'
         element 'Element2'
@@ -105,7 +105,7 @@ end#context ListElement
 
 context 'SaveElement' do
   it 'creates a save element' do
-    page = PageBuilder.page do
+    page = PageBuilder.page '' do
       save 'SaveElement'
     end#define
 
@@ -115,7 +115,7 @@ end#context SaveElement
 
 context 'TextInputElement' do
   it 'creates a text input element' do
-    page = PageBuilder.page do
+    page = PageBuilder.page '' do
       text 'TextInputElement'
     end#define
 
