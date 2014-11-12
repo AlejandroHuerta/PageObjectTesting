@@ -4,32 +4,32 @@ class Page
   include PageObject
 
   class << self
-    attr_accessor :page
+    attr_accessor :page, :driver
 
-    def build_page(_class)
-      Object::const_get(_class.name).new @driver
+    def build_page(klass)
+      Object::const_get(klass.name).new
     end
   end
 
-  attr_accessor :driver
-  attr_reader :elements
+  attr_reader :params
 
-  def initialize(_driver)
-    @driver = _driver
-    @elements = {}
+  def initialize(hash = {})
+    @params = hash
+    @params[:children] ||= {}
   end #initialize
 
-  def send(*_args)
-    if @elements.has_key? _args[0]
-      @elements[_args[0]]
+  def send(*args)
+    if @params[:children].has_key? args[0]
+      @params[:children][args[0]].params[:driver] = Page.driver
+      @params[:children][args[0]]
     else
       super
     end #else
   end #send
 
-  def method_missing(_method_name, *_args, &_block)
-    if @driver.respond_to? _method_name
-      @driver.send _method_name, *_args, &_block
+  def method_missing(method_name, *args, &block)
+    if @params[:driver].respond_to? method_name
+      @params[:driver].send method_name, *args, &block
     else
       super
     end #else

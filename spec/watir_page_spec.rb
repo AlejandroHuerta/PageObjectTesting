@@ -2,7 +2,7 @@ require_relative '../lib/page_object/page'
 require_relative '../lib/driver/watir_driver'
 
 class Page1 < Page
-  def initialize(_driver)
+  def initialize(hash = {})
     super
 
     create_click_object name: 'Page2',
@@ -13,7 +13,7 @@ class Page1 < Page
 end#Page1
 
 class Page2 < Page
-  def initialize(_driver)
+  def initialize(hash = {})
     super
   end#initialize
 end#Page2
@@ -23,7 +23,8 @@ describe Page do
 
   before(:all) do
     @browser = WatirDriver.new
-    Page.page = Page1.new @browser
+    Page.driver = @browser
+    Page.page = Page1.new
   end#before all
 
   after(:all) do

@@ -7,7 +7,7 @@ class ListElement < ElementObject
 
   def Fixnum(_driver, *args)
     if args[0].is_a? Fixnum
-      @params[:children].each do |child|
+      @params[:children].each do |_key, child|
         if child.params[:selector][0].specifier.nil?
           child.params[:selector][0].specifier = {index: args[0]}
         else

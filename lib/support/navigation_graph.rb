@@ -19,7 +19,7 @@ class NavigationGraph
 
   def traverse(node)
     if node.class <= Page
-      node.elements.each do |_key, element|
+      node.children.each do |_key, element|
         @dg.add_link node, element
         traverse element
       end#do
