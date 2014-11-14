@@ -6,6 +6,7 @@ require_relative '../lib/elements/list_element'
 require_relative '../lib/elements/save_element'
 require_relative '../lib/elements/selector'
 require_relative '../lib/elements/text_input_element'
+require_relative '../lib/elements/select_list_element'
 
 describe ElementObject do
 
@@ -268,4 +269,24 @@ describe ElementObject do
       expect(e.send(:value)).to eq('Fake Element 2')
     end#do
   end#SaveElement
+
+  describe SelectListElement do
+    it '.send(:select, OPTION)' do
+      e = SelectListElement.new driver: @driver,
+                               name: 'NAME',
+                               selector: Selector.new(type: :select_list,
+                                                      specifier: {id: 'select_test'})
+
+      expect(e.send(:select, 'second 2nd')).to eql 'second 2nd'
+    end#it
+
+    it '.send(:options)' do
+      e = SelectListElement.new driver: @driver,
+                                name: 'NAME',
+                                selector: Selector.new(type: :select_list,
+                                                       specifier: {id: 'select_test'})
+
+      expect(e.send(:options)).to eql ['first 1st', 'second 2nd', 'third 3rd', 'fourth 4th', 'fifth 5th']
+    end#it
+  end#SelectListElement
 end#ElementObject
