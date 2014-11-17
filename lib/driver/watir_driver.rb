@@ -30,11 +30,13 @@ end# WatirDriver
 require_relative '../../lib/elements/element_object'
 require_relative '../../lib/elements/text_input_element'
 require_relative '../../lib/elements/checkbox_element'
+require_relative '../../lib/elements/key_sequence_element'
 
 #Action filters for this driver
 ElementObject.actions_dictionary = {see: :present?}
 TextInputElement.actions_dictionary = {enter: :value, text: :value}
 CheckboxElement.actions_dictionary = {check: :set, uncheck: :clear, checked?: :set?}
+KeySequenceElement.actions_dictionary = {do: :send_keys, enter: :send_keys}
 
 require_relative '../../lib/elements/select_list_element'
 

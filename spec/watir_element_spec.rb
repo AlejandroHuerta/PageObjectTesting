@@ -7,6 +7,7 @@ require_relative '../lib/elements/save_element'
 require_relative '../lib/elements/selector'
 require_relative '../lib/elements/text_input_element'
 require_relative '../lib/elements/select_list_element'
+require_relative '../lib/elements/key_sequence_element'
 
 describe ElementObject do
 
@@ -289,4 +290,41 @@ describe ElementObject do
       expect(e.send(:options)).to eql ['first 1st', 'second 2nd', 'third 3rd', 'fourth 4th', 'fifth 5th']
     end#it
   end#SelectListElement
+
+  describe KeySequenceElement do
+
+    it '.send(:enter)' do
+      d = TextInputElement.new driver: @driver,
+                               name: 'First name',
+                               selector: Selector.new(type: :text_field,
+                                                      specifier: {id: 'email'}),
+                               actions: {click: :click}
+
+      d.send(:click)
+
+      e = KeySequenceElement.new driver: @driver,
+                                 name: 'NAME',
+                                 keys: [[:shift, 'a'], 'b']
+
+      expect(e.send(:enter)).to eql nil
+      expect(d.send(:text)).to eql 'Ab'
+    end
+
+    it '.send(:do)' do
+      d = TextInputElement.new driver: @driver,
+                               name: 'First name',
+                               selector: Selector.new(type: :text_field,
+                                                      specifier: {id: 'email'}),
+                               actions: {click: :click}
+
+      d.send(:click)
+
+      e = KeySequenceElement.new driver: @driver,
+                                 name: 'NAME',
+                                 keys: [[:shift, 'b'], 'a']
+
+      expect(e.send(:do)).to eql nil
+      expect(d.send(:text)).to eql 'Ba'
+    end
+  end
 end#ElementObject
